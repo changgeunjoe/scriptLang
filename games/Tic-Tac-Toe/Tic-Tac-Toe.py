@@ -16,7 +16,6 @@ window = Tk()
 photo_Empty = PhotoImage(file = image_empty_path)
 photo_O = PhotoImage(file = image_o_path)
 photo_X = PhotoImage(file = image_x_path)
-cellnum=0
 gameTurn = 0
 
 class Cell(Label):
@@ -24,18 +23,16 @@ class Cell(Label):
     def __init__(self, row = 0, column = 0,cellnums=0):
         global window
         global photo_Empty
-        global cellnum
-        cellnum=cellnums
+        cellnum = cellnums
      
         super().__init__(window, width=34, height=34)
         super().grid(row = row, column = column)
         super().configure(image = photo_Empty)
-        super().bind("<Button-1>", lambda e: self.changePhoto())
+        super().bind("<Button-1>", lambda e: self.changePhoto(cellnum = cellnum))
         #self.winner(cells,checkoxox)
         
-    def changePhoto(event):
-        global gameTurn
-        global cellnum
+    def changePhoto(event, cellnum = -1):
+        global gameTurn        
         if gameTurn == 0:
             super().configure(image = photo_O)
             checkoxox='o'
