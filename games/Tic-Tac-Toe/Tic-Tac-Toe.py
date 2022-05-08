@@ -1,4 +1,5 @@
 
+from cgitb import reset
 from glob import glob
 from tkinter import *
 
@@ -74,13 +75,16 @@ def main():
     global window
    
     window.title('Tic-Tac-Toe')
-    window.geometry("115x125+450+100")
-    window.resizable(False, False)
+    window.geometry("115x145+450+100")
+    #window.resizable(False, False)
 
     board = [
     [Cell(row = 0, column = 0, cellnums=0), Cell(row = 0, column = 1,cellnums=1), Cell(row = 0, column = 2,cellnums=2)],
     [Cell(row = 1, column = 0,cellnums=3), Cell(row = 1, column = 1,cellnums=4), Cell(row = 1, column = 2,cellnums=5)],
     [Cell(row = 2, column = 0,cellnums=6), Cell(row = 2, column = 1,cellnums=7), Cell(row = 2, column = 2,cellnums=8)]]
+
+    result = Label(window, text = "sdfasd", anchor = 'center', width=0, height= 2, fg = 'red', bg = 'blue')
+    result.grid(row=3, column = 1, padx = 0, sticky = 'n')
 
 
     window.mainloop()
