@@ -24,13 +24,16 @@ myText = Label(window, text = "o의 차례", anchor = 'center', width=0, height=
 def changeText():
     global gameTurn
     global myText
-    if gameTurn == -1:
-        pass
-    elif gameTurn == 0:
+    
+    if winner()==1:
+        myText['text'] = checkox+"의 승리"
+    elif winner()==0:
+            myText['text']= "비겼습니다"
+    elif gameTurn == 0 and  winner()==4:
         myText['text'] = "o의 차례"
-       
-    elif gameTurn == 1:
+    elif gameTurn == 1 and winner()==4:
         myText['text'] = "x의 차례"
+ 
 
 class Cell(Label):
     cellStatus = 0
@@ -52,19 +55,24 @@ class Cell(Label):
             checkoxox='o'
             obj.cellStatus = 1
             cells[cellnum]='o'
-            print(cellnum)
+            print(obj.cellStatus)
+            winner()
             gameTurn = 1
         elif gameTurn == 1 and obj.cellStatus == 0:
             super().configure(image = photo_X)
             checkoxox='x'
             obj.cellStatus = 2
             cells[cellnum]='x'
-            print(cellnum)
+            print(obj.cellStatus)
+            winner()
             gameTurn = 0
         changeText()
     
 
 def winner():
+    for i in cells: 
+            if  i ==' ':
+                return 4 
     if  (cells[0] == checkox and cells[1] == checkox and cells[2] == checkox) or \
         (cells[3] == checkox and cells[4] == checkox and cells[5] == checkox) or \
         (cells[6] == checkox and cells[7] == checkox and cells[8] == checkox) or \
@@ -73,10 +81,9 @@ def winner():
         (cells[2] == checkox and cells[5] == checkox and cells[8] == checkox) or \
         (cells[0] == checkox and cells[4] == checkox and cells[8] == checkox) or \
         (cells[2] == checkox and cells[4] == checkox and cells[6] == checkox):
-        print(checkox+"비겼습니다.")
-        return True
+        return 1
     else:
-        return False
+        return 0
 
 
 def full(cells):
