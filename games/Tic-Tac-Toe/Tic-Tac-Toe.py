@@ -26,7 +26,7 @@ def changeText():
     global myText
     
     if winner()==1:
-        myText['text'] = checkox+"의 승리"
+        myText['text'] = checkox+"의 승리"        
     elif winner()==0:
             myText['text']= "비겼습니다"
     elif gameTurn == 0 and  winner()==4:
@@ -49,6 +49,8 @@ class Cell(Label):
         #self.winner(cells,checkoxox)
         
     def changePhoto(event, cellnum = -1, obj = NONE):
+        if winner()==1:
+            return
         global gameTurn
         if gameTurn == 0 and obj.cellStatus == 0:
             super().configure(image = photo_O)
@@ -56,7 +58,6 @@ class Cell(Label):
             obj.cellStatus = 1
             cells[cellnum]='o'
             print(obj.cellStatus)
-            winner()
             gameTurn = 1
         elif gameTurn == 1 and obj.cellStatus == 0:
             super().configure(image = photo_X)
@@ -64,15 +65,11 @@ class Cell(Label):
             obj.cellStatus = 2
             cells[cellnum]='x'
             print(obj.cellStatus)
-            winner()
             gameTurn = 0
         changeText()
     
 
 def winner():
-    for i in cells: 
-            if  i ==' ':
-                return 4 
     if  (cells[0] == checkox and cells[1] == checkox and cells[2] == checkox) or \
         (cells[3] == checkox and cells[4] == checkox and cells[5] == checkox) or \
         (cells[6] == checkox and cells[7] == checkox and cells[8] == checkox) or \
@@ -82,8 +79,10 @@ def winner():
         (cells[0] == checkox and cells[4] == checkox and cells[8] == checkox) or \
         (cells[2] == checkox and cells[4] == checkox and cells[6] == checkox):
         return 1
-    else:
-        return 0
+    for i in cells: 
+            if  i ==' ':
+                return 4
+    return 0
 
 
 def full(cells):
