@@ -24,24 +24,26 @@ class Cell(Label):
         global window
         global photo_Empty
         cellnum = cellnums
-     
+        cellStatus = 0
         super().__init__(window, width=34, height=34)
         super().grid(row = row, column = column)
         super().configure(image = photo_Empty)
-        super().bind("<Button-1>", lambda e: self.changePhoto(cellnum = cellnum))
+        super().bind("<Button-1>", lambda e: self.changePhoto(cellnum = cellnum, cellstate = cellStatus))
         #self.winner(cells,checkoxox)
         
-    def changePhoto(event, cellnum = -1):
+    def changePhoto(event, cellnum = -1, cellstate = 0):
         global gameTurn        
-        if gameTurn == 0:
+        if gameTurn == 0 and cellstate == 0:
             super().configure(image = photo_O)
             checkoxox='o'
+            cellstate = 1
             #cells[cellnum]='o'
             print(cellnum)
             gameTurn = 1
-        else:
+        elif cellstate == 0:
             super().configure(image = photo_X)
             checkoxox='x'
+            cellstate = 2
             cells[cellnum]='x'
             print(cellnum)
             gameTurn = 0
