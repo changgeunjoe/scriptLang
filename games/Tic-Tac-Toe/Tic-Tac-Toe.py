@@ -19,6 +19,19 @@ photo_O = PhotoImage(file = image_o_path)
 photo_X = PhotoImage(file = image_x_path)
 gameTurn = 0
 
+myText = Label(window, text = "o의 차례", anchor = 'center', width=0, height= 2, fg = 'red', bg = 'blue')
+        
+def changeText():
+    global gameTurn
+    global myText
+    if gameTurn == -1:
+        pass
+    elif gameTurn == 0:
+        myText['text'] = "o의 차례"
+       
+    elif gameTurn == 1:
+        myText['text'] = "x의 차례"
+
 class Cell(Label):
     cellStatus = 0
     def __init__(self, row = 0, column = 0,cellnums=0):
@@ -26,7 +39,7 @@ class Cell(Label):
         global photo_Empty
         cellnum = cellnums
         cellStatus = 0
-        super().__init__(window, width=34, height=34)
+        super().__init__(window, width=37, height=34)
         super().grid(row = row, column = column)
         super().configure(image = photo_Empty)
         super().bind("<Button-1>", lambda e: self.changePhoto(cellnum = cellnum, obj = self))
@@ -48,6 +61,7 @@ class Cell(Label):
             cells[cellnum]='x'
             print(cellnum)
             gameTurn = 0
+        changeText()
     
 
 def winner():
@@ -63,6 +77,8 @@ def winner():
         return True
     else:
         return False
+
+
 def full(cells):
     full = True
     for mark in cells:
@@ -71,11 +87,16 @@ def full(cells):
         break
     print("비겼습니다!")
     return full    
+
+
+
+    
+
 def main():
     global window
    
     window.title('Tic-Tac-Toe')
-    window.geometry("115x145+450+100")
+    window.geometry("133x145+450+100")
     #window.resizable(False, False)
 
     board = [
@@ -83,8 +104,9 @@ def main():
     [Cell(row = 1, column = 0,cellnums=3), Cell(row = 1, column = 1,cellnums=4), Cell(row = 1, column = 2,cellnums=5)],
     [Cell(row = 2, column = 0,cellnums=6), Cell(row = 2, column = 1,cellnums=7), Cell(row = 2, column = 2,cellnums=8)]]
 
-    result = Label(window, text = "sdfasd", anchor = 'center', width=0, height= 2, fg = 'red', bg = 'blue')
-    result.grid(row=3, column = 1, padx = 0, sticky = 'n')
+    myText.grid(row=3, column = 1, padx = 0, sticky = 'n')
+    
+    
 
 
     window.mainloop()
