@@ -7,7 +7,7 @@ window = Tk()
 _MAXROW = 6
 _MAXCOL = 7
 process_button = None#하단의 버튼
-myText = Canvas(windowwidth=0, height= 1)
+myText = Canvas(window, width=0, height= 1)
 class Cell(Canvas):
     cellStatus = 0
     def __init__(self, row = 0, column = 0,cellnums=0):
@@ -39,8 +39,9 @@ class Cell(Canvas):
 
 
 
-def continueColStone(cells):
-    for row in cells:
+def continueColStone():
+    global board
+    for row in board:
         myContinueStone = 0
         contCnt = 0
         for col in row:
@@ -58,7 +59,7 @@ def continueColStone(cells):
                 myContinueStone = 0
         if contCnt == 4:
             return (4, myContinueStone)
-    return (0, 0)
+    return (0, '')
 
 
 def continueRowStone(cells):
@@ -80,10 +81,11 @@ def continueRowStone(cells):
                 myContinueStone = 0
         if contCnt == 4:
             return (4, myContinueStone)
-    return (0, 0)
+    return (0, '')
 
 
-def continuedialogRDStone(cells):
+def continuedialogRDStone():
+    global board
     for rowW in range(6):
         contiStone = ''
         countCnt = 0
@@ -124,7 +126,8 @@ def continuedialogRDStone(cells):
             col += 1
     return ''
 
-def continuedialogLDStone(cells):
+def continuedialogLDStone():
+    global board
     for rowW in range(6):
         contiStone = ''
         countCnt = 0
@@ -166,6 +169,17 @@ def continuedialogLDStone(cells):
     return ''
 
 
+def checkFloorPosition(myRow = -1, myCol = -1):
+    if myRow == -1 or myCol == -1:
+        return False
+    elif myRow == 5:
+        return True
+    elif board[myRow][myCol] != '':
+        return False
+    elif board[myRow + 1][myCol] != '':
+        return True
+    
+
 def main():
     global window
    
@@ -180,9 +194,9 @@ def main():
     [Cell(row = 3, column = 0, cellnums=0), Cell(row = 3, column = 1,cellnums=1), Cell(row = 3, column = 2,cellnums=2),Cell(row = 3, column = 3,cellnums=3),Cell(row = 3, column = 4,cellnums=4),Cell(row = 3, column = 5,cellnums=5),Cell(row = 3, column = 6,cellnums=6)],
     [Cell(row = 4, column = 0, cellnums=0), Cell(row = 4, column = 1,cellnums=1), Cell(row = 4, column = 2,cellnums=2),Cell(row = 4, column = 3,cellnums=3),Cell(row = 4, column = 4,cellnums=4),Cell(row = 4, column = 5,cellnums=5),Cell(row = 4, column = 6,cellnums=6)],
     [Cell(row = 5, column = 0, cellnums=0), Cell(row = 5, column = 1,cellnums=1), Cell(row = 5, column = 2,cellnums=2),Cell(row = 5, column = 3,cellnums=3),Cell(row = 5, column = 4,cellnums=4),Cell(row = 5, column = 5,cellnums=5),Cell(row = 5, column = 6,cellnums=6)]]
-    #myText.grid(row=6, column = 1, padx = 0, sticky = 'n')
-    myText.pack()
-    myText.grid(6,1)
+    myText.grid(row=6, column = 1, padx = 0, sticky = 'n')
+    #myText.pack()
+    #myText.grid(6,1)
     myText.create_text(150,100,text="dddddd",font=(20),fill="blue")
     window.mainloop()
     
