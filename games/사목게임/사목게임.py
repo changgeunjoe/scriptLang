@@ -31,9 +31,9 @@ class Cell(Canvas):
             nextcolor="yellow"
             self.cellStatus="red"
         self.setColor(nextcolor)
-        if continueColStone()=="red" or continuedialogRDStone()=="red" or continuedialogLDStone()=="red":
+        if str(continueColStone())=='red' or str(continuedialogRDStone())=='red' or str(continuedialogLDStone())=='red':
             print("red")
-        elif continueColStone()=="yellow" or continuedialogRDStone()=="yellow" or continuedialogLDStone()=="yellow":
+        elif str(continueColStone())=='yellow' or str(continuedialogRDStone())=='yellow' or str(continuedialogLDStone())=='yellow':
              print("yellow")
     def setColor(self, color):
         self.delete("oval") # https://pythonguides.com/python-tkinter-canvas/
@@ -97,7 +97,7 @@ def continuedialogRDStone():
         countCnt = 0
         col = 0
         row = rowW
-        while(row < 7 and col < 7):
+        while(row < 6 and col < 7):
             if countCnt == 4:
                 return contiStone
             elif countCnt != 0:
@@ -116,7 +116,7 @@ def continuedialogRDStone():
         countCnt = 0
         col = colW
         row = 0
-        while(row < 7 and col < 7):
+        while(row < 6 and col < 7):
             if countCnt == 4:
                 return contiStone
             elif countCnt != 0:
@@ -137,9 +137,9 @@ def continuedialogLDStone():
     for rowW in range(6):
         contiStone = ''
         countCnt = 0
-        col = 7
+        col = 6
         row = rowW
-        while(row < 7 and col < 8):
+        while(row < 6 and col < 7):
             if countCnt == 4:
                 return contiStone
             elif countCnt != 0:
@@ -158,7 +158,7 @@ def continuedialogLDStone():
         countCnt = 0
         col = colW
         row = 0
-        while(row < 7 and col < 8):
+        while(row < 6 and col < 7):
             if countCnt == 4:
                 return contiStone
             elif countCnt != 0:
