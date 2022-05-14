@@ -12,6 +12,8 @@ class Cell(Canvas):
     cellStatus = ""
     def __init__(self, row = 0, column = 0,cellnums=0):
         self.color = "white"
+        self.row = row
+        self.col = column
         cellnum = cellnums
         cellStatus = ""
         global window
@@ -24,17 +26,20 @@ class Cell(Canvas):
        # super().bind("<Button-1>", lambda e: self.changePhoto(cellnum = cellnum, obj = self))
     def clicked(self, event): # red 또는 yellow 돌 놓기.
         global nextcolor
-        if nextcolor == "yellow":
-            self.cellStatus="yellow"
-            nextcolor="red" 
-        else: 
-            nextcolor="yellow"
-            self.cellStatus="red"
-        self.setColor(nextcolor)
         if str(continueColStone())=='red' or str(continuedialogRDStone())=='red' or str(continuedialogLDStone())=='red':
             print("red")
         elif str(continueColStone())=='yellow' or str(continuedialogRDStone())=='yellow' or str(continuedialogLDStone())=='yellow':
-             print("yellow")
+            print("yellow")
+
+        if checkFloorPosition(self.row, self.col):
+            if nextcolor == "yellow":
+                self.cellStatus="yellow"
+                nextcolor="red" 
+            else: 
+                nextcolor="yellow"
+                self.cellStatus="red"
+            self.setColor(nextcolor)
+
     def setColor(self, color):
         self.delete("oval") # https://pythonguides.com/python-tkinter-canvas/
         self.color = color
@@ -98,9 +103,7 @@ def continuedialogRDStone():
         col = 0
         row = rowW
         while(row < 6 and col < 7):
-            if countCnt == 4:
-                return contiStone
-            elif countCnt != 0:
+            if countCnt != 0:
                 if board[row][col].cellStatus == contiStone:
                     countCnt += 1
                 elif board[row][col].cellStatus != contiStone:
@@ -109,17 +112,18 @@ def continuedialogRDStone():
             elif board[row][col].cellStatus != '':
                 contiStone  = board[row][col].cellStatus
                 countCnt += 1
+            if countCnt == 4:
+                return contiStone
             row += 1
             col += 1
+            
     for colW in range(1, 6):
         contiStone = ''
         countCnt = 0
         col = colW
         row = 0
         while(row < 6 and col < 7):
-            if countCnt == 4:
-                return contiStone
-            elif countCnt != 0:
+            if countCnt != 0:
                 if board[row][col].cellStatus == contiStone:
                     countCnt += 1
                 elif board[row][col].cellStatus != contiStone:
@@ -128,8 +132,10 @@ def continuedialogRDStone():
             elif board[row][col].cellStatus != '':
                 contiStone  = board[row][col].cellStatus
                 countCnt += 1
+            if countCnt == 4:
+                return contiStone
             row += 1
-            col += 1
+            col += 1        
     return ''
 
 def continuedialogLDStone():
@@ -140,9 +146,7 @@ def continuedialogLDStone():
         col = 6
         row = rowW
         while(row < 6 and col < 7):
-            if countCnt == 4:
-                return contiStone
-            elif countCnt != 0:
+            if countCnt != 0:
                 if board[row][col].cellStatus == contiStone:
                     countCnt += 1
                 elif board[row][col].cellStatus != contiStone:
@@ -151,6 +155,8 @@ def continuedialogLDStone():
             elif board[row][col].cellStatus != '':
                 contiStone  = board[row][col].cellStatus
                 countCnt += 1
+            if countCnt == 4:
+                return contiStone
             row += 1
             col -= 1
     for colW in range(1, 7):
@@ -159,9 +165,7 @@ def continuedialogLDStone():
         col = colW
         row = 0
         while(row < 6 and col < 7):
-            if countCnt == 4:
-                return contiStone
-            elif countCnt != 0:
+            if countCnt != 0:
                 if board[row][col].cellStatus == contiStone:
                     countCnt += 1
                 elif board[row][col].cellStatus != contiStone:
@@ -170,6 +174,8 @@ def continuedialogLDStone():
             elif board[row][col].cellStatus != '':
                 contiStone  = board[row][col].cellStatus
                 countCnt += 1
+            if countCnt == 4:
+                return contiStone
             row += 1
             col -= 1
     return ''
@@ -178,11 +184,11 @@ def continuedialogLDStone():
 def checkFloorPosition(myRow = -1, myCol = -1):
     if myRow == -1 or myCol == -1:
         return False
+    elif board[myRow][myCol].cellStatus != '':
+        return False
     elif myRow == 5:
         return True
-    elif board[myRow][myCol] != '':
-        return False
-    elif board[myRow + 1][myCol] != '':
+    elif board[myRow + 1][myCol].cellStatus != '':
         return True
     
 
