@@ -128,9 +128,9 @@ def continuedialogLDStone(cells):
     for rowW in range(6):
         contiStone = ''
         countCnt = 0
-        col = 6
+        col = 7
         row = rowW
-        while(row < 7 and col < 7):
+        while(row < 7 and col < 8):
             if countCnt == 4:
                 return contiStone
             elif countCnt != 0:
@@ -144,12 +144,12 @@ def continuedialogLDStone(cells):
                 countCnt += 1
             row += 1
             col -= 1
-    for colW in range(1, 6):
+    for colW in range(1, 7):
         contiStone = ''
         countCnt = 0
         col = colW
         row = 0
-        while(row < 7 and col < 7):
+        while(row < 7 and col < 8):
             if countCnt == 4:
                 return contiStone
             elif countCnt != 0:
