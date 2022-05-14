@@ -9,11 +9,11 @@ _MAXCOL = 7
 process_button = None#하단의 버튼
 myText = Canvas(window, width=0, height= 1)
 class Cell(Canvas):
-    cellStatus = 0
+    cellStatus = ""
     def __init__(self, row = 0, column = 0,cellnums=0):
         self.color = "white"
         cellnum = cellnums
-        cellStatus = 0
+        cellStatus = ""
         global window
         super().__init__(window, width=20, height=20,bg="blue")
         super().grid(row = row, column = column)
@@ -25,10 +25,16 @@ class Cell(Canvas):
     def clicked(self, event): # red 또는 yellow 돌 놓기.
         global nextcolor
         if nextcolor == "yellow":
+            self.cellStatus="yellow"
             nextcolor="red" 
         else: 
             nextcolor="yellow"
+            self.cellStatus="red"
         self.setColor(nextcolor)
+        if continueColStone()=="red" or continuedialogRDStone()=="red" or continuedialogLDStone()=="red":
+            print("red")
+        elif continueColStone()=="yellow" or continuedialogRDStone()=="yellow" or continuedialogLDStone()=="yellow":
+             print("yellow")
     def setColor(self, color):
         self.delete("oval") # https://pythonguides.com/python-tkinter-canvas/
         self.color = color
@@ -36,8 +42,6 @@ class Cell(Canvas):
     def setText(self,text):
         self.delete("oval")
         self.create_oval(4,4,20,20,fill=text,tags="oval")    
-
-
 
 def continueColStone():
     global board
@@ -59,7 +63,9 @@ def continueColStone():
                 myContinueStone = 0
         if contCnt == 4:
             return myContinueStone
-    return ''
+    return ''    
+
+
 
 
 def continueRowStone(cells):
