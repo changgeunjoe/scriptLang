@@ -84,9 +84,46 @@ def continueRowStone(cells):
 
 
 def continuedialogRDStone(cells):
-    
-    while(True):
-        pass
+    for rowW in range(6):
+        contiStone = ''
+        countCnt = 0
+        col = 0
+        row = rowW
+        while(row < 7 and col < 7):
+            if countCnt == 4:
+                return contiStone
+            elif countCnt != 0:
+                if board[row][col].cellStatus == contiStone:
+                    countCnt += 1
+                elif board[row][col].cellStatus != contiStone:
+                    contiStone = ''
+                    countCnt = 0
+            elif board[row][col].cellStatus != '':
+                contiStone  = board[row][col].cellStatus
+                countCnt += 1
+            row += 1
+            col += 1
+    for colW in range(1, 6):
+        contiStone = ''
+        countCnt = 0
+        col = colW
+        row = 0
+        while(row < 7 and col < 7):
+            if countCnt == 4:
+                return contiStone
+            elif countCnt != 0:
+                if board[row][col].cellStatus == contiStone:
+                    countCnt += 1
+                elif board[row][col].cellStatus != contiStone:
+                    contiStone = ''
+                    countCnt = 0
+            elif board[row][col].cellStatus != '':
+                contiStone  = board[row][col].cellStatus
+                countCnt += 1
+            row += 1
+            col += 1
+    return ''
+
 
 def main():
     global window
