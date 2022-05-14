@@ -84,6 +84,7 @@ def continueRowStone(cells):
 
 
 def continuedialogRDStone(cells):
+    
     while(True):
         pass
 
