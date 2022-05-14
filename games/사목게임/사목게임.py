@@ -58,8 +58,8 @@ def continueColStone():
                 contCnt = 0
                 myContinueStone = 0
         if contCnt == 4:
-            return (4, myContinueStone)
-    return (0, '')
+            return myContinueStone
+    return ''
 
 
 def continueRowStone(cells):
@@ -80,8 +80,8 @@ def continueRowStone(cells):
                 contCnt = 0
                 myContinueStone = 0
         if contCnt == 4:
-            return (4, myContinueStone)
-    return (0, '')
+            return myContinueStone
+    return ''
 
 
 def continuedialogRDStone():
