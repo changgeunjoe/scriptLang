@@ -26,9 +26,9 @@ class Cell(Canvas):
        # super().bind("<Button-1>", lambda e: self.changePhoto(cellnum = cellnum, obj = self))
     def clicked(self, event): # red 또는 yellow 돌 놓기.
         global nextcolor
-        if str(continueColStone())=='red' or str(continuedialogRDStone())=='red' or str(continuedialogLDStone())=='red':
+        if str(continueRowStone()) == 'red' or str(continueColStone())=='red' or str(continuedialogRDStone())=='red' or str(continuedialogLDStone())=='red':
             print("red")
-        elif str(continueColStone())=='yellow' or str(continuedialogRDStone())=='yellow' or str(continuedialogLDStone())=='yellow':
+        elif str(continueRowStone()) == 'red' or str(continueColStone())=='yellow' or str(continuedialogRDStone())=='yellow' or str(continuedialogLDStone())=='yellow':
             print("yellow")
 
         if checkFloorPosition(self.row, self.col):
@@ -73,21 +73,22 @@ def continueColStone():
 
 
 
-def continueRowStone(cells):
+def continueRowStone():
+    global board
     for col in range(7):
         myContinueStone = 0
         contCnt = 0
         for row in range(6):
-            if myContinueStone ==0 and cells[row][col].cellStatus !='':
-                if cells[row][col].cellStatus == 'yellow':
+            if myContinueStone ==0 and board[row][col].cellStatus !='':
+                if board[row][col].cellStatus == 'yellow':
                     myContinueStone = 'yellow'
                     contCnt = contCnt + 1
-                elif cells[row][col].cellStatus == 'red':
+                elif board[row][col].cellStatus == 'red':
                     myContinueStone = 'red'
                     contCnt = contCnt + 1
-            elif cells[row][col].cellStatus == myContinueStone:
+            elif board[row][col].cellStatus == myContinueStone:
                 contCnt = contCnt + 1
-            elif cells[row][col].cellStatus != myContinueStone:
+            elif board[row][col].cellStatus != myContinueStone:
                 contCnt = 0
                 myContinueStone = 0
         if contCnt == 4:
