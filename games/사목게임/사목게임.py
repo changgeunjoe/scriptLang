@@ -36,8 +36,8 @@ class Cell(Canvas):
                 self.cellStatus="yellow"
                 nextcolor="red" 
             else: 
-                nextcolor="yellow"
                 self.cellStatus="red"
+                nextcolor="yellow"
             self.setColor(nextcolor)
 
     def setColor(self, color):
