@@ -208,51 +208,45 @@ class Cell(Canvas):
         global currentcolor
         global winner
         global gameturn
-        if str(continueRowStone()) == 'red' or str(continueColStone()) == 'red' or str(continuedialogRDStone()) == 'red' or str(continuedialogLDStone()) == 'red':
-            pass
-        elif str(continueRowStone()) == 'red' or str(continueColStone()) == 'yellow' or str(continuedialogRDStone()) == 'yellow' or str(continuedialogLDStone()) == 'yellow':
-            pass
-
-        elif checkFloorPosition(obj.row, obj.col):
-            if currentcolor == "red":
-                obj.cellStatus = currentcolor
-                currentcolor = "yellow"
-            elif currentcolor == "yellow":
-                obj.cellStatus = currentcolor
-                currentcolor = "red"
-            obj.setColor(color=obj.cellStatus)
-        if gameturn == 0:
-            gameturn = 1
-        elif gameturn == 1:
-            gameturn = 0
-        if continueRowStone()[2] == 'red':
-            winner = 1
-            setLineUp(continueRowStone()[0], continueRowStone()[1], continueRowStone()[2])
-            obj.create_oval(4, 4, 20, 20, tags="oval")
-        elif continueColStone()[2] == 'red':
-            winner = 1
-            setLineLeft(continueRowStone()[0], continueRowStone()[1], continueRowStone()[2])
-            #obj.create_oval(4, 4, 20, 20, fill="blue", tags="oval")
-        elif continuedialogRDStone()[2] == 'red':
-            winner = 1
-            obj.create_oval(4, 4, 20, 20, fill="blue", tags="oval")
-        elif continuedialogLDStone()[2] == 'red':
-            winner = 1
-            obj.create_oval(4, 4, 20, 20, fill="blue", tags="oval")
-
-        elif continueRowStone()[2] == 'yellow':
-            winner = 2
-            obj.create_oval(4, 4, 20, 20, fill="blue", tags="oval")
-        elif continueColStone()[2] == 'yellow':
-            winner = 2
-            obj.create_oval(4, 4, 20, 20, fill="blue", tags="oval")
-        elif continuedialogRDStone()[2] == 'yellow':
-            winner = 2
-            obj.create_oval(4, 4, 20, 20, fill="blue", tags="oval")
-        elif continuedialogLDStone()[2] == 'yellow':
-            winner = 2
-            obj.create_oval(4, 4, 20, 20, fill="blue", tags="oval")
-        changeText()
+        if winner == 4:
+            if checkFloorPosition(obj.row, obj.col):
+                if currentcolor == "red":
+                    obj.cellStatus = currentcolor
+                    currentcolor = "yellow"
+                elif currentcolor == "yellow":
+                    obj.cellStatus = currentcolor
+                    currentcolor = "red"
+                obj.setColor(color=obj.cellStatus)
+            if gameturn == 0:
+                gameturn = 1
+            elif gameturn == 1:
+                gameturn = 0
+            if continueRowStone()[2] == 'red':
+                winner = 1            
+                setLineUp(row = continueRowStone()[0], col = continueRowStone()[1], color =  continueRowStone()[2])
+            elif continueColStone()[2] == 'red':
+                winner = 1
+                setLineLeft(row = continueColStone()[0], col = continueColStone()[1], color =  continueColStone()[2])            
+            elif continuedialogRDStone()[2] == 'red':
+                setDialogLU(row = continuedialogRDStone()[0], col = continuedialogRDStone()[1], color =  continuedialogRDStone()[2])
+                winner = 1
+            elif continuedialogLDStone()[2] == 'red':
+                setDialogRU(row = continuedialogLDStone()[0], col = continuedialogLDStone()[1], color =  continuedialogLDStone()[2])
+                winner = 1
+    
+            elif continueRowStone()[2] == 'yellow':
+                winner = 2
+                setLineUp(row = continueRowStone()[0], col = continueRowStone()[1], color =  continueRowStone()[2])
+            elif continueColStone()[2] == 'yellow':
+                winner = 2
+                setLineLeft(row = continueColStone()[0], col = continueColStone()[1], color =  continueColStone()[2])            
+            elif continuedialogRDStone()[2] == 'yellow':
+                winner = 2
+                setDialogLU(row = continuedialogRDStone()[0], col = continuedialogRDStone()[1], color =  continuedialogRDStone()[2])
+            elif continuedialogLDStone()[2] == 'yellow':
+                winner = 2
+                setDialogRU(row = continuedialogLDStone()[0], col = continuedialogLDStone()[1], color =  continuedialogLDStone()[2])
+            changeText()
 
     def setColor(self, color):
         self.delete("oval")  # https://pythonguides.com/python-tkinter-canvas/
@@ -261,24 +255,25 @@ class Cell(Canvas):
 
 
 def setLineLeft(row = 0, col = 0, color = 'blue'):
-    for x in range(col - 4 , col):
-        board[row][x].configure = color
-
+    for x in range(col - 3 , col + 1):
+        board[row][x].configure(bg = color)
 
 def setLineUp(row = 0, col = 0, color = 'blue'):
-    for x in range(row - 4 , row):
-        board[x][col].configure = color
+    for x in range(row - 3 , row + 1):
+        board[x][col].configure(bg = color)
 
 
-def setDialogLU(row = 0, col = 0, color = 'blue'):
-    for x in range(row - 4 , row):
-        for y in range(col - 4, col):
-            board[x][y].configure = color
+def setDialogLU(row = 0, col = 0, color = 'blue'):    
+    col = col - 3
+    for x in range(row - 3, row + 1):        
+        board[x][col].configure(bg = color)
+        col = col + 1
 
-def setDialogRU(row = 0, col = 0, color = 'blue'):
-    for x in range(row - 4 , row):
-        for y in range(col, col + 4):
-            board[x][y].configure = color
+def setDialogRU(row = 0, col = 0, color = 'blue'):    
+    col = col + 3
+    for x in range(row - 3, row + 1):
+        board[x][col].configure(bg = color)
+        col = col - 1
 
 def main():
     global window
