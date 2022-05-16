@@ -1,7 +1,7 @@
 from tkinter import *
 MaxRow = 6
 MaxCol = 7
-nextcolor = "red" 
+currentcolor = 'red'
 from tkinter import *
 window = Tk()
 _MAXROW = 6
@@ -25,20 +25,20 @@ class Cell(Canvas):
         super().bind("<Button-1>", self.clicked)
        # super().bind("<Button-1>", lambda e: self.changePhoto(cellnum = cellnum, obj = self))
     def clicked(self, event): # red 또는 yellow 돌 놓기.
-        global nextcolor
+        global currentcolor
         if str(continueRowStone()) == 'red' or str(continueColStone())=='red' or str(continuedialogRDStone())=='red' or str(continuedialogLDStone())=='red':
             print("red")
         elif str(continueRowStone()) == 'red' or str(continueColStone())=='yellow' or str(continuedialogRDStone())=='yellow' or str(continuedialogLDStone())=='yellow':
             print("yellow")
 
-        if checkFloorPosition(self.row, self.col):
-            if nextcolor == "yellow":
-                self.cellStatus="yellow"
-                nextcolor="red" 
-            else: 
-                self.cellStatus="red"
-                nextcolor="yellow"
-            self.setColor(nextcolor)
+        elif checkFloorPosition(self.row, self.col):
+            if currentcolor == "red":
+                self.cellStatus = currentcolor
+                currentcolor="yellow"
+            elif currentcolor == "yellow":
+                self.cellStatus= currentcolor
+                currentcolor="red"
+            self.setColor(color = self.cellStatus)
 
     def setColor(self, color):
         self.delete("oval") # https://pythonguides.com/python-tkinter-canvas/
@@ -46,15 +46,15 @@ class Cell(Canvas):
         self.create_oval(4, 4, 20, 20, fill = self.color, tags="oval")
     def setText(self,text):
         self.delete("oval")
-        self.create_oval(4,4,20,20,fill=text,tags="oval")    
+        self.create_oval(4,4,20,20,fill=text,tags="oval")
 
 def continueColStone():
     global board
     for row in board:
-        myContinueStone = 0
+        myContinueStone = ''
         contCnt = 0
         for col in row:
-            if myContinueStone ==0 and col.cellStatus !='':
+            if myContinueStone == '' and col.cellStatus !='':
                 if col.cellStatus == 'yellow':
                     myContinueStone = 'yellow'
                     contCnt = contCnt + 1
@@ -76,10 +76,10 @@ def continueColStone():
 def continueRowStone():
     global board
     for col in range(7):
-        myContinueStone = 0
+        myContinueStone = ''
         contCnt = 0
         for row in range(6):
-            if myContinueStone ==0 and board[row][col].cellStatus !='':
+            if myContinueStone == '' and board[row][col].cellStatus != '':
                 if board[row][col].cellStatus == 'yellow':
                     myContinueStone = 'yellow'
                     contCnt = contCnt + 1
