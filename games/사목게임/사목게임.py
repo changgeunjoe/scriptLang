@@ -1,10 +1,9 @@
 from tkinter import *
-MaxRow = 6
-MaxCol = 7
+
 currentcolor = 'red'
 window = Tk()
 winner = 4
-gameturn = 0
+gameturn = 1
 
 _MAXROW = 6
 _MAXCOL = 7
@@ -16,53 +15,65 @@ board = [[]]
 
 def continueColStone():
     global board
-    for row in board:
+    rowC=0
+    while(rowC < 6):        
         myContinueStone = ''
         contCnt = 0
-        for col in row:
-            if myContinueStone == '' and col.cellStatus != '':
-                if col.cellStatus == 'yellow':
+        col=0
+        while(col < 7):
+            if contCnt == 0 and board[rowC][col].cellStatus != '':
+                if board[rowC][col].cellStatus == 'yellow':
                     myContinueStone = 'yellow'
                     contCnt = contCnt + 1
-                elif col.cellStatus == 'red':
+                elif board[rowC][col].cellStatus == 'red':
                     myContinueStone = 'red'
                     contCnt = contCnt + 1
-            elif col.cellStatus == myContinueStone:
+            elif board[rowC][col].cellStatus == myContinueStone and myContinueStone != '':
                 contCnt = contCnt + 1
-            elif col.cellStatus != myContinueStone:
+            elif board[rowC][col].cellStatus != myContinueStone:
                 contCnt = 0
-                myContinueStone = 0
+                myContinueStone = ''
+            if contCnt == 4:
+                return (rowC, col, myContinueStone)
+            col = col + 1    
         if contCnt == 4:
-            return myContinueStone
-    return ''
+                return (rowC, col, myContinueStone)
+        rowC = rowC + 1
+    return (-1, -1, '')
 
 
 def continueRowStone():
     global board
-    for col in range(7):
+    colC = 0
+    while(colC < 7):
         myContinueStone = ''
         contCnt = 0
-        for row in range(6):
-            if myContinueStone == '' and board[row][col].cellStatus != '':
-                if board[row][col].cellStatus == 'yellow':
+        row = 0
+        while(row < 6):
+            if contCnt == 0 and board[row][colC].cellStatus != '':
+                if board[row][colC].cellStatus == 'yellow':
                     myContinueStone = 'yellow'
                     contCnt = contCnt + 1
-                elif board[row][col].cellStatus == 'red':
+                elif board[row][colC].cellStatus == 'red':
                     myContinueStone = 'red'
                     contCnt = contCnt + 1
-            elif board[row][col].cellStatus == myContinueStone:
+            elif board[row][colC].cellStatus == myContinueStone and myContinueStone != '':
                 contCnt = contCnt + 1
-            elif board[row][col].cellStatus != myContinueStone:
+            elif board[row][colC].cellStatus != myContinueStone:
                 contCnt = 0
-                myContinueStone = 0
+                myContinueStone = ''
+            if contCnt == 4:
+                return (row, colC, myContinueStone)
+            row = row + 1
         if contCnt == 4:
-            return myContinueStone
-    return ''
+            return (row, colC, myContinueStone)
+        colC = colC + 1
+    return (-1,-1, '')
 
 
 def continuedialogRDStone():
     global board
-    for rowW in range(6):
+    for rowW in range(6):        
         contiStone = ''
         countCnt = 0
         col = 0
@@ -78,7 +89,7 @@ def continuedialogRDStone():
                 contiStone = board[row][col].cellStatus
                 countCnt += 1
             if countCnt == 4:
-                return contiStone
+                return (row, col, contiStone)
             row += 1
             col += 1
 
@@ -98,10 +109,10 @@ def continuedialogRDStone():
                 contiStone = board[row][col].cellStatus
                 countCnt += 1
             if countCnt == 4:
-                return contiStone
+                return (row, col, contiStone)
             row += 1
             col += 1
-    return ''
+    return (-1, -1, '')
 
 
 def continuedialogLDStone():
@@ -122,7 +133,7 @@ def continuedialogLDStone():
                 contiStone = board[row][col].cellStatus
                 countCnt += 1
             if countCnt == 4:
-                return contiStone
+                return (row, col, contiStone)
             row += 1
             col -= 1
     for colW in range(1, 7):
@@ -141,10 +152,10 @@ def continuedialogLDStone():
                 contiStone = board[row][col].cellStatus
                 countCnt += 1
             if countCnt == 4:
-                return contiStone
+                return (row, col, contiStone)
             row += 1
             col -= 1
-    return ''
+    return (-1, -1, '')
 
 def changeText():
     global gameturn
@@ -198,9 +209,9 @@ class Cell(Canvas):
         global winner
         global gameturn
         if str(continueRowStone()) == 'red' or str(continueColStone()) == 'red' or str(continuedialogRDStone()) == 'red' or str(continuedialogLDStone()) == 'red':
-            winner = 1
+            pass
         elif str(continueRowStone()) == 'red' or str(continueColStone()) == 'yellow' or str(continuedialogRDStone()) == 'yellow' or str(continuedialogLDStone()) == 'yellow':
-            winner = 2
+            pass
 
         elif checkFloorPosition(obj.row, obj.col):
             if currentcolor == "red":
@@ -212,8 +223,35 @@ class Cell(Canvas):
             obj.setColor(color=obj.cellStatus)
         if gameturn == 0:
             gameturn = 1
-        else:
+        elif gameturn == 1:
             gameturn = 0
+        if continueRowStone()[2] == 'red':
+            winner = 1
+            setLineUp(continueRowStone()[0], continueRowStone()[1], continueRowStone()[2])
+            obj.create_oval(4, 4, 20, 20, tags="oval")
+        elif continueColStone()[2] == 'red':
+            winner = 1
+            setLineLeft(continueRowStone()[0], continueRowStone()[1], continueRowStone()[2])
+            #obj.create_oval(4, 4, 20, 20, fill="blue", tags="oval")
+        elif continuedialogRDStone()[2] == 'red':
+            winner = 1
+            obj.create_oval(4, 4, 20, 20, fill="blue", tags="oval")
+        elif continuedialogLDStone()[2] == 'red':
+            winner = 1
+            obj.create_oval(4, 4, 20, 20, fill="blue", tags="oval")
+
+        elif continueRowStone()[2] == 'yellow':
+            winner = 2
+            obj.create_oval(4, 4, 20, 20, fill="blue", tags="oval")
+        elif continueColStone()[2] == 'yellow':
+            winner = 2
+            obj.create_oval(4, 4, 20, 20, fill="blue", tags="oval")
+        elif continuedialogRDStone()[2] == 'yellow':
+            winner = 2
+            obj.create_oval(4, 4, 20, 20, fill="blue", tags="oval")
+        elif continuedialogLDStone()[2] == 'yellow':
+            winner = 2
+            obj.create_oval(4, 4, 20, 20, fill="blue", tags="oval")
         changeText()
 
     def setColor(self, color):
@@ -222,11 +260,31 @@ class Cell(Canvas):
         self.create_oval(4, 4, 20, 20, fill=self.color, tags="oval")
 
 
+def setLineLeft(row = 0, col = 0, color = 'blue'):
+    for x in range(col - 4 , col):
+        board[row][x].configure = color
+
+
+def setLineUp(row = 0, col = 0, color = 'blue'):
+    for x in range(row - 4 , row):
+        board[x][col].configure = color
+
+
+def setDialogLU(row = 0, col = 0, color = 'blue'):
+    for x in range(row - 4 , row):
+        for y in range(col - 4, col):
+            board[x][y].configure = color
+
+def setDialogRU(row = 0, col = 0, color = 'blue'):
+    for x in range(row - 4 , row):
+        for y in range(col, col + 4):
+            board[x][y].configure = color
+
 def main():
     global window
 
     window.title('Tic-Tac-Toe')
-    window.geometry("133x145+450+100")
+    window.geometry("270x145+450+100")
     
     global board
     board = [

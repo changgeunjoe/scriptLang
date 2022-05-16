@@ -99,7 +99,7 @@ def main():
     [Cell(row = 1, column = 0,cellnums=3), Cell(row = 1, column = 1,cellnums=4), Cell(row = 1, column = 2,cellnums=5)],
     [Cell(row = 2, column = 0,cellnums=6), Cell(row = 2, column = 1,cellnums=7), Cell(row = 2, column = 2,cellnums=8)]]
 
-    myText.grid(row=3, column = 1, padx = 0, sticky = 'n')
+    myText.grid(row=3, column = 1, padx = 0, sticky = 'n')  myText.grid(row=3, column = 1, padx = 0, sticky = 'n')
     
     window.mainloop()
 
