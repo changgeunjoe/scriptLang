@@ -4,10 +4,12 @@ MaxCol = 7
 currentcolor = 'red'
 from tkinter import *
 window = Tk()
+winner=4
+gameturn=0
 _MAXROW = 6
 _MAXCOL = 7
 process_button = None#하단의 버튼
-myText = Canvas(window, width=0, height= 1)
+myText = Button(window, text = "red의 차례", anchor = 'center', width=7, height= 1, fg = 'red', bg = 'blue')
 class Cell(Canvas):
     cellStatus = ""
     def __init__(self, row = 0, column = 0,cellnums=0):
@@ -26,9 +28,13 @@ class Cell(Canvas):
        # super().bind("<Button-1>", lambda e: self.changePhoto(cellnum = cellnum, obj = self))
     def clicked(self, event): # red 또는 yellow 돌 놓기.
         global currentcolor
+        global winner
+        global gameturn
         if str(continueRowStone()) == 'red' or str(continueColStone())=='red' or str(continuedialogRDStone())=='red' or str(continuedialogLDStone())=='red':
+            winner = 1
             print("red")
         elif str(continueRowStone()) == 'red' or str(continueColStone())=='yellow' or str(continuedialogRDStone())=='yellow' or str(continuedialogLDStone())=='yellow':
+            winner =2
             print("yellow")
 
         elif checkFloorPosition(self.row, self.col):
@@ -39,14 +45,30 @@ class Cell(Canvas):
                 self.cellStatus= currentcolor
                 currentcolor="red"
             self.setColor(color = self.cellStatus)
+        if gameturn == 0:
+            gameturn=1
+        else:
+            gameturn =0
+        changeText()
 
     def setColor(self, color):
         self.delete("oval") # https://pythonguides.com/python-tkinter-canvas/
         self.color = color
         self.create_oval(4, 4, 20, 20, fill = self.color, tags="oval")
-    def setText(self,text):
-        self.delete("oval")
-        self.create_oval(4,4,20,20,fill=text,tags="oval")
+def changeText():
+    global gameturn
+    global myText
+    global winner
+    if winner == 1:
+        myText['text'] = "red의 승리"
+    elif winner == 2:
+        myText['text'] = "yellow 승리"
+    elif winner == 0:
+            myText['text']= "비겼습니다"
+    elif gameturn == 0 and  winner == 4:
+        myText['text'] = "yellow의 차례"
+    elif gameturn == 1 and winner == 4:
+        myText['text'] = "red의 차례"
 
 def continueColStone():
     global board
@@ -207,10 +229,11 @@ def main():
     [Cell(row = 3, column = 0, cellnums=0), Cell(row = 3, column = 1,cellnums=1), Cell(row = 3, column = 2,cellnums=2),Cell(row = 3, column = 3,cellnums=3),Cell(row = 3, column = 4,cellnums=4),Cell(row = 3, column = 5,cellnums=5),Cell(row = 3, column = 6,cellnums=6)],
     [Cell(row = 4, column = 0, cellnums=0), Cell(row = 4, column = 1,cellnums=1), Cell(row = 4, column = 2,cellnums=2),Cell(row = 4, column = 3,cellnums=3),Cell(row = 4, column = 4,cellnums=4),Cell(row = 4, column = 5,cellnums=5),Cell(row = 4, column = 6,cellnums=6)],
     [Cell(row = 5, column = 0, cellnums=0), Cell(row = 5, column = 1,cellnums=1), Cell(row = 5, column = 2,cellnums=2),Cell(row = 5, column = 3,cellnums=3),Cell(row = 5, column = 4,cellnums=4),Cell(row = 5, column = 5,cellnums=5),Cell(row = 5, column = 6,cellnums=6)]]
-    myText.grid(row=6, column = 1, padx = 0, sticky = 'n')
+    #myText.grid(row=6, column = 1, padx = 0, sticky = 'n')
     #myText.pack()
     #myText.grid(6,1)
-    myText.create_text(150,100,text="dddddd",font=(20),fill="blue")
+    #myText.create_text(150,100,text="dddddd",font=(20),fill="blue")
+    myText.grid(row=1, column = 9, padx = 0, sticky = 'n')
     window.mainloop()
     
 
