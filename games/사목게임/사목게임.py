@@ -5,9 +5,7 @@ window = Tk()
 winner = 4
 gameturn = 1
 
-_MAXROW = 6
-_MAXCOL = 7
-process_button = None  # 하단의 버튼
+process_button = None
 myText = Button(window, text="red의 차례", anchor='center',
                 width=7, height=1, fg='red', bg='blue')
 
@@ -198,13 +196,10 @@ class Cell(Canvas):
         global window
         super().__init__(window, width=20, height=20, bg="blue")
         super().grid(row=row, column=column)
-        #global photo_Empty
-        #super().configure(image = photo_Empty)
         super().create_oval(4, 4, 20, 20, fill="white", tags="oval")
         super().bind("<Button-1>", lambda e: self.clicked(obj=self))
-       # super().bind("<Button-1>", lambda e: self.changePhoto(cellnum = cellnum, obj = self))
 
-    def clicked(event, obj):  # red 또는 yellow 돌 놓기.
+    def clicked(event, obj):
         global currentcolor
         global winner
         global gameturn
@@ -249,7 +244,7 @@ class Cell(Canvas):
             changeText()
 
     def setColor(self, color):
-        self.delete("oval")  # https://pythonguides.com/python-tkinter-canvas/
+        self.delete("oval")
         self.color = color
         self.create_oval(4, 4, 20, 20, fill=self.color, tags="oval")
 
@@ -296,10 +291,6 @@ def main():
     [Cell(row=5, column=0, cellnums=0), Cell(row=5, column=1, cellnums=1), Cell(row=5, column=2, cellnums=2), Cell(
         row=5, column=3, cellnums=3), Cell(row=5, column=4, cellnums=4), Cell(row=5, column=5, cellnums=5), Cell(row=5, column=6, cellnums=6)]
     ]
-    #myText.grid(row=6, column = 1, padx = 0, sticky = 'n')
-    # myText.pack()
-    # myText.grid(6,1)
-    # myText.create_text(150,100,text="dddddd",font=(20),fill="blue")
     myText.grid(row=1, column=9, padx=0, sticky='n')
     window.mainloop()
 
