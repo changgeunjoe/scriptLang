@@ -97,15 +97,28 @@ class HANGMANGUI:
         self.canvas.create_line(x4,y4,x4+50,y4+100,tags='hangman')
     def setWord(self):
         index=random.randint()
+    def __init__(self):
+        fp=open('txt\hangman.txt', 'r')    
+        self.words=fp.read().split()
+        window=Tk()
+        window.title('hang_man')
+        self.canvas=Canvas(window,bg='white',width=400, height=300)
+        self.canvas.pack()
+        self.setWord()
+        self.DrawHangman()
+        self.canvas.bind('<key>',self.KeyEvent)
+        self.canvas.focus_set()
+        window.mainloop
 
-initWords()
-answerWord = getRandWord()
-while(True):
-    if changeWord():
-        answerWord = getRandWord()
-    print(answerWord)
-    print(secretWord)
-    print(isContainWord(input()))
+HANGMANGUI
+# initWords()
+# answerWord = getRandWord()
+# while(True):
+#     if changeWord():
+#         answerWord = getRandWord()
+#     print(answerWord)
+#     print(secretWord)
+#     print(isContainWord(input()))
 
 
         
