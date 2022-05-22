@@ -53,24 +53,26 @@ def changeWord():
 class Hangman(Canvas):
     cellStatus = ""
 
-    def __init__(self, ):
+    def __init__(self):
         self.color = "white"
         cellStatus = ""
+        initWords()
+        #getRandWord()
         global window
         super().__init__(window, width=400, height=300, bg="white")
         super().grid(row=0, column=0)
        # super().create_arc(20,200,20+80,200+40,start=0,extent=180)
        # super().create_line(20+40,200,20+40,20)
        # super().create_line(20+40,20,20+140,20)
-        self.DrawHangman()
+        self.draw()
         super().bind("<Button-1>", lambda e: self.clicked(obj=self))
 
-    def setColor(self, color):
-        self.delete("oval")
-        self.color = color
-        self.create_oval(4, 4, 20, 20, fill=self.color, tags="oval")
-    def DrawHangman(self):
+    def guess(self,letter):
+        pass
+    def draw(self):
         self.delete('hangman')
+        self.create_text(200,190,text='단어 추측:')
+        self.create_text(280,190,text=getRandWord())
         self.create_arc(20,200,20+80,200+40,start=0,extent=180)
         self.create_line(20+40,200,20+40,20)
         self.create_line(20+40,20,20+140,20)
@@ -86,33 +88,21 @@ class Hangman(Canvas):
         #         self.canvas.create_text(200,260,text='단어 추측'+self.toString(self.missChars),tags='hangman')
         # if self.NofMiss<1:
         #     return
-        # x1=20+140
-        # y1=20
-        # x2=x1
-        # y2=y1+20
-        # self.canvas.create_line(x1,y1,x2,y2,tags='hangman')
-        # if self.NofMiss < 2:
-        #     return
-        # x3=x2
-        # y3=y2+20
-        # self.canvas.create_oval(x3-20,y3-20,x3+20,y3+20,tags='hangman')
-        # if self.NofMiss < 3:
-        #     return
-        # self.canvas.create_line(x3-15,y3+15,x3-50,y3+70,tags='hangman')
-        # if self.NofMiss < 4:
-        #         return
-        # self.canvas.create_line(x3+15,y3+15,x3+50,y3+70,tags='hangman')
-        # if self.NofMiss < 5:
-        #     return
-        # x4=x3
-        # y4=y3+100
-        # self.canvas.create_line(x3,y3+20,x4,y4,tags='hangman')
-        # if self.NofMiss < 6:
-        #     return
-        # self.canvas.create_line(x4,y4,x4-50,y4+100,tags='hangman')
-        # if self.NofMiss < 7:
-        #     return
-        # self.canvas.create_line(x4,y4,x4+50,y4+100,tags='hangman')
+        x1=20+140
+        y1=20
+        x2=x1
+        y2=y1+20
+        self.create_line(x1,y1,x2,y2,tags='hangman')
+        x3=x2
+        y3=y2+20
+        self.create_oval(x3-20,y3-20,x3+20,y3+20,tags='hangman')
+        self.create_line(x3-15,y3+15,x3-50,y3+70,tags='hangman')
+        self.create_line(x3+15,y3+15,x3+50,y3+70,tags='hangman')
+        x4=x3
+        y4=y3+100
+        self.create_line(x3,y3+20,x4,y4,tags='hangman')
+        self.create_line(x4,y4,x4-50,y4+100,tags='hangman')
+        self.create_line(x4,y4,x4+50,y4+100,tags='hangman')
     
 
 
