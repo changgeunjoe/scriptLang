@@ -62,10 +62,11 @@ def keyEvent(event):
     res = isContainWord(repr(event.char)[1])
     if not res[0]:
         global wrongCount
-        wrongCount-=1
-        wrongWords.append(res[1])
-        hang.delete('wrongevent')
-        hang.create_text(280,240,text = wrongWords, tags='wrongevent')
+        if wrongWords.count(res[1]) != 1:
+            wrongCount-=1
+            wrongWords.append(res[1])
+            hang.delete('wrongevent')
+            hang.create_text(280,240,text = wrongWords, tags='wrongevent')
     hang.draw()
     #96번줄 secretWord 다시 출력 되게 해야 됨
 
