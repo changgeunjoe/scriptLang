@@ -4,6 +4,7 @@ from tkinter import *
 words = []
 secretWord = '****'
 answerWord = ''
+wrongWords = []
 window = Tk()
 
 
@@ -20,6 +21,7 @@ def initWords():#단어 리스트 파일 읽어 오는 부분
 
 def getRandWord():#answerWord = getRandWord()
     global words
+    global answerWord
     randWN = randI(0, len(words))
     answerWord = words[randWN]
     words.pop(randWN)
@@ -52,7 +54,12 @@ def clicked(event, obj):
 
 def keyEvent(event):
     hang.delete('keyevent')
-    hang.create_text(280,210,text = (repr(event.char)),tags='keyevent')
+    hang.create_text(280,210,text = (repr(event.char))[1], tags='keyevent')
+    global wrongWords
+    res = isContainWord(repr(event.char)[1])
+    if not res[0]:
+        wrongWords.append(res[1])
+    #96번줄 secretWord 다시 출력 되게 해야 됨
 
 def inputReturn(event, obj):        
     print('enter')
@@ -61,14 +68,12 @@ def inputBackSpace(event, obj):
     print('backSpace')
 
 
-class Hangman(Canvas):
-    cellStatus = ""
+class Hangman(Canvas):    
 
     def __init__(self):
-        self.color = "white"
-        cellStatus = ""
+        self.color = "white"        
         initWords()
-        #getRandWord()
+        getRandWord()
         global window
         super().__init__(window, width=400, height=300, bg="white")
         super().grid(row=0, column=0)
@@ -84,10 +89,11 @@ class Hangman(Canvas):
     def guess(self,letter):
         pass
     def draw(self):
+        global secretWord
         self.delete('hangman')
         self.create_text(200,190,text='단어 추측:')
         self.create_text(200,210,text='추측 단어 입력:')
-        self.create_text(280,190,text=getRandWord())
+        self.create_text(280,190,text=secretWord)
         self.create_arc(20,200,20+80,200+40,start=0,extent=180)
         self.create_line(20+40,200,20+40,20)
         self.create_line(20+40,20,20+140,20)
