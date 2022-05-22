@@ -51,7 +51,8 @@ def clicked(event, obj):
         print('clicked')
 
 def keyEvent(event):
-    hang.create_text(280,210,text = (repr(event.char)))
+    hang.delete('keyevent')
+    hang.create_text(280,210,text = (repr(event.char)),tags='keyevent')
 
 def inputReturn(event, obj):        
     print('enter')
