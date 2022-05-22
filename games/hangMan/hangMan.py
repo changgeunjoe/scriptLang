@@ -1,8 +1,6 @@
 from random import randrange as randI
 from tkinter import *
-import random
-import tkinter
-from unittest import result
+
 words = []
 secretWord = '****'
 answerWord = ''
@@ -49,6 +47,18 @@ def changeWord():
             return False
     return True
 
+def clicked(event, obj):        
+        print('clicked')
+
+def keyEvent(event):
+    hang.create_text(280,210,text= (repr(event.char)))
+
+def inputReturn(event, obj):        
+    print('enter')
+
+def inputBackSpace(event, obj):
+    print('backSpace')
+
 
 class Hangman(Canvas):
     cellStatus = ""
@@ -61,21 +71,21 @@ class Hangman(Canvas):
         global window
         super().__init__(window, width=400, height=300, bg="white")
         super().grid(row=0, column=0)
-       # super().create_arc(20,200,20+80,200+40,start=0,extent=180)
-       # super().create_line(20+40,200,20+40,20)
-       # super().create_line(20+40,20,20+140,20)
         self.draw()
-        super().bind("<Button-1>", lambda e: self.clicked(obj=self))
-        super().bind("<Key>", lambda e: self.inputKey(obj=self))
-        super().bind("<Return>", lambda e: self.inputReturn(obj=self))
-        super().bind("<BackSpace>", lambda e: self.inputBackSpace(obj=self))
+        window.bind("<Key>", keyEvent)
+        #super().bind("<Button-1>", lambda e: self.clicked(obj=self))
+        # super().bind("<Return>", lambda e: self.inputReturn(obj=self))
+        # super().bind("<BackSpace>", lambda e: self.inputBackSpace(obj=self))
+    
+    
 
+   
     def guess(self,letter):
         pass
     def draw(self):
         self.delete('hangman')
         self.create_text(200,190,text='단어 추측:')
-        self.create_text(200,210,text='추측 단어 입력:')  
+        self.create_text(200,210,text='추측 단어 입력:')
         self.create_text(280,190,text=getRandWord())
         self.create_arc(20,200,20+80,200+40,start=0,extent=180)
         self.create_line(20+40,200,20+40,20)
@@ -109,27 +119,15 @@ class Hangman(Canvas):
         self.create_line(x4,y4,x4-50,y4+100,tags='hangman')
         self.create_line(x4,y4,x4+50,y4+100,tags='hangman')
     
-    def clicked(event, obj):
-        
-        pass
-    def inputKey(event, obj):
-        tempKey=event.keysym
-        obj.create_text(200,220,text=tempKey)
-        print(tempKey)
-    def inputReturn(event, obj):
-        pass
-    def inputBackSpace(event, obj):
-        pass
-
+hang = 0
 
 def main():
     global window
 
     window.title('Hang-man')
     window.geometry("400x400+450+100")
-    
-    global board
-    Hangman()
+    global hang
+    hang = Hangman()    
     window.mainloop()
 
 
