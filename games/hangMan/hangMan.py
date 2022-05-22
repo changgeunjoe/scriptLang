@@ -1,10 +1,12 @@
 from random import randrange as randI
 from tkinter import *
 import random
+import tkinter
 from unittest import result
 words = []
 secretWord = '****'
 answerWord = ''
+
 
 def initWords():#단어 리스트 파일 읽어 오는 부분
     global words
@@ -45,6 +47,8 @@ def changeWord():
         if x == '*':
             return False
     return True
+
+
 class HANGMANGUI:
     def string(self,word):
         result =' '
@@ -95,22 +99,24 @@ class HANGMANGUI:
         if self.NofMiss < 7:
             return
         self.canvas.create_line(x4,y4,x4+50,y4+100,tags='hangman')
-    def setWord(self):
-        index=random.randint()
+    
     def __init__(self):
+        global window
         fp=open('txt\hangman.txt', 'r')    
-        self.words=fp.read().split()
-        window=Tk()
+        self.words=fp.read().split()        
         window.title('hang_man')
         self.canvas=Canvas(window,bg='white',width=400, height=300)
         self.canvas.pack()
-        self.setWord()
+        
         self.DrawHangman()
         self.canvas.bind('<key>',self.KeyEvent)
         self.canvas.focus_set()
-        window.mainloop
+        
+window = Tk()
+hang = HANGMANGUI()
+window.mainloop
 
-HANGMANGUI
+
 # initWords()
 # answerWord = getRandWord()
 # while(True):
