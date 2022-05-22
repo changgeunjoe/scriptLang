@@ -75,6 +75,7 @@ class Hangman(Canvas):
     def draw(self):
         self.delete('hangman')
         self.create_text(200,190,text='단어 추측:')
+        self.create_text(200,210,text='추측 단어 입력:')  
         self.create_text(280,190,text=getRandWord())
         self.create_arc(20,200,20+80,200+40,start=0,extent=180)
         self.create_line(20+40,200,20+40,20)
@@ -109,9 +110,12 @@ class Hangman(Canvas):
         self.create_line(x4,y4,x4+50,y4+100,tags='hangman')
     
     def clicked(event, obj):
+        
         pass
     def inputKey(event, obj):
-        pass
+        tempKey=event.keysym
+        obj.create_text(200,220,text=tempKey)
+        print(tempKey)
     def inputReturn(event, obj):
         pass
     def inputBackSpace(event, obj):
