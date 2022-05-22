@@ -66,6 +66,9 @@ class Hangman(Canvas):
        # super().create_line(20+40,20,20+140,20)
         self.draw()
         super().bind("<Button-1>", lambda e: self.clicked(obj=self))
+        super().bind("<Key>", lambda e: self.inputKey(obj=self))
+        super().bind("<Return>", lambda e: self.inputReturn(obj=self))
+        super().bind("<BackSpace>", lambda e: self.inputBackSpace(obj=self))
 
     def guess(self,letter):
         pass
@@ -76,6 +79,7 @@ class Hangman(Canvas):
         self.create_arc(20,200,20+80,200+40,start=0,extent=180)
         self.create_line(20+40,200,20+40,20)
         self.create_line(20+40,20,20+140,20)
+    
         # if self.doneWithWrong:
         #     self.canvas.create_text(200,250,text='정답'+self.hiddenword,tags='hangman')
         #     self.canvas.create_text(200,265,text='계속하면 Enter',tags='hangman')
@@ -104,6 +108,14 @@ class Hangman(Canvas):
         self.create_line(x4,y4,x4-50,y4+100,tags='hangman')
         self.create_line(x4,y4,x4+50,y4+100,tags='hangman')
     
+    def clicked(event, obj):
+        pass
+    def inputKey(event, obj):
+        pass
+    def inputReturn(event, obj):
+        pass
+    def inputBackSpace(event, obj):
+        pass
 
 
 def main():
@@ -118,18 +130,3 @@ def main():
 
 
 main()
-        
-
-
-
-# initWords()
-# answerWord = getRandWord()
-# while(True):
-#     if changeWord():
-#         answerWord = getRandWord()
-#     print(answerWord)
-#     print(secretWord)
-#     print(isContainWord(input()))
-
-
-        
