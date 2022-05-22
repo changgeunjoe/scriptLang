@@ -1,4 +1,7 @@
 from random import randrange as randI
+from tkinter import *
+import random
+from unittest import result
 words = []
 secretWord = '****'
 answerWord = ''
@@ -42,6 +45,58 @@ def changeWord():
         if x == '*':
             return False
     return True
+class HANGMANGUI:
+    def string(self,word):
+        result =' '
+        for ch in word:
+            result +=ch
+        return result
+    def DrawHangman(self):
+        self.canvas.delete('hangman')
+        self.canvas.create_arc(20,200,20+80,200+40,start=0,extent=180)
+        self.canvas.create_line(20+40,200,20+40,20)
+        self.canvas.create_line(20+40,20,20+140,20)
+        if self.doneWithWrong:
+            self.canvas.create_text(200,250,text='정답'+self.hiddenword,tags='hangman')
+            self.canvas.create_text(200,265,text='계속하면 Enter',tags='hangman')
+        if self.doneWithCorrect:
+            self.canvas.create_text(200,250,text='맞았습니다'+self.hiddenword,tags='hangman')
+            self.canvas.create_text(200,265,text='계속하면 Enter',tags='hangman')
+        else:
+            self.canvas.create_text(200,250,text='단어 추측'+self.toString(self.guessWord),tags='hangman')
+            if self.NofMiss>0:
+                self.canvas.create_text(200,260,text='단어 추측'+self.toString(self.missChars),tags='hangman')
+        if self.NofMiss<1:
+            return
+        x1=20+140
+        y1=20
+        x2=x1
+        y2=y1+20
+        self.canvas.create_line(x1,y1,x2,y2,tags='hangman')
+        if self.NofMiss < 2:
+            return
+        x3=x2
+        y3=y2+20
+        self.canvas.create_oval(x3-20,y3-20,x3+20,y3+20,tags='hangman')
+        if self.NofMiss < 3:
+            return
+        self.canvas.create_line(x3-15,y3+15,x3-50,y3+70,tags='hangman')
+        if self.NofMiss < 4:
+                return
+        self.canvas.create_line(x3+15,y3+15,x3+50,y3+70,tags='hangman')
+        if self.NofMiss < 5:
+            return
+        x4=x3
+        y4=y3+100
+        self.canvas.create_line(x3,y3+20,x4,y4,tags='hangman')
+        if self.NofMiss < 6:
+            return
+        self.canvas.create_line(x4,y4,x4-50,y4+100,tags='hangman')
+        if self.NofMiss < 7:
+            return
+        self.canvas.create_line(x4,y4,x4+50,y4+100,tags='hangman')
+    def setWord(self):
+        index=random.randint()
 
 initWords()
 answerWord = getRandWord()
@@ -51,3 +106,6 @@ while(True):
     print(answerWord)
     print(secretWord)
     print(isContainWord(input()))
+
+
+        
