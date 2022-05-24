@@ -21,7 +21,7 @@ def InitScreen():
     frameList = Frame(g_Tk, padx=10, pady=10, bg='#ffff00')
     frameList.pack(side="bottom", fill="both", expand=True)
 # title 부분
-    MainText = Label(frameTitle, font = fontTitle, text="[서울시 근린시설 App]")
+    MainText = Label(frameTitle, font = fontTitle, text="[집 한번 사볼까?]")
     MainText.pack(anchor="center", fill="both")
     global SearchListBox 
     LBScrollbar = Scrollbar(frameCombo)
@@ -46,7 +46,7 @@ def InitScreen():
     # 목록 부분
     global listBox
     LBScrollbar = Scrollbar(frameList)
-l   listBox = Listbox(frameList, selectmode='extended',\
+    listBox = Listbox(frameList, selectmode='extended',\
         font= fontNormal, width=10, height=15, \
         borderwidth=12, relief='ridge', yscrollcommand=LBScrollbar.set)
     listBox.bind('<<ListboxSelect>>', event_for_listbox)
@@ -62,9 +62,9 @@ def onSearch(): # "검색" 버튼 이벤트처리
     elif iSearchIndex == 1: 
         pass 
     elif iSearchIndex == 2:
-         pass 
+        pass 
     elif iSearchIndex == 3:
-         pass # 유틸리티 함수: 문자열 내용 있을 때만 사용
+        pass # 유틸리티 함수: 문자열 내용 있을 때만 사용
 def getStr(s): 
     return '' if not s else s
 def SearchLibrary(): # "검색" 버튼 -> "도서관"
@@ -75,10 +75,18 @@ def SearchLibrary(): # "검색" 버튼 -> "도서관"
         strXml = f.read().decode('utf-8')
     parseData = ElementTree.fromstring(strXml)
     elements = parseData.iter('row')
-
-
-
-
+def SearchLibrary(): # "검색" 버튼 -> "도서관" ………………………………
+    i = 1
+    for item in elements: # " row“ element들
+        part_el = item.find('CODE_VALUE')
+        if InputLabel.get() not in part_el.text:
+         continue 
+        _text = '[' + str(i) + '] ' + \
+    getStr(item.find('LBRRY_NAME').text) + \
+    ' : ' + getStr(item.find('ADRES').text) + \
+    ' : ' + getStr(item.find('TEL_NO').text)
+    listBox.insert(i-1, _text)
+    i = i+1
 
 
 InitScreen() # 화면 전체 구성
