@@ -35,8 +35,46 @@ def InitScreen():
     LBScrollbar.config(command=SearchListBox.yview)
     sendEmailButton = Button(frameCombo, font = fontNormal, text='이메일') 
     sendEmailButton.pack(side='right', padx=10, fill='y')
+    # 사용자 입력 부분
+    global InputLabel
+    InputLabel = Entry(frameEntry, font = fontNormal, \
+     width = 26, borderwidth = 12, relief = 'ridge')
+    InputLabel.pack(side="left", padx=10, expand=True)
+    SearchButton = Button(frameEntry, font = fontNormal, \
+    text="검색", command=onSearch)
+    SearchButton.pack(side="right", padx=10, expand=True, fill='y')
+    # 목록 부분
+    global listBox
+    LBScrollbar = Scrollbar(frameList)
+l   listBox = Listbox(frameList, selectmode='extended',\
+        font= fontNormal, width=10, height=15, \
+        borderwidth=12, relief='ridge', yscrollcommand=LBScrollbar.set)
+    listBox.bind('<<ListboxSelect>>', event_for_listbox)
+    listBox.pack(side='left', anchor='n', expand=True, fill="x")
 
-
+def onSearch(): # "검색" 버튼 이벤트처리
+    global SearchListBox
+    sels = SearchListBox.curselection()
+    iSearchIndex = \
+        0 if len(sels) == 0 else SearchListBox.curselection()[0]
+    if iSearchIndex == 0: 
+        SearchLibrary()
+    elif iSearchIndex == 1: 
+        pass 
+    elif iSearchIndex == 2:
+         pass 
+    elif iSearchIndex == 3:
+         pass # 유틸리티 함수: 문자열 내용 있을 때만 사용
+def getStr(s): 
+    return '' if not s else s
+def SearchLibrary(): # "검색" 버튼 -> "도서관"
+    from xml.etree import ElementTree  
+    global listBox
+    listBox.delete(0,listBox.size()) 
+    with open('서울도서관.xml', 'rb') as f: 
+        strXml = f.read().decode('utf-8')
+    parseData = ElementTree.fromstring(strXml)
+    elements = parseData.iter('row')
 
 
 
