@@ -19,38 +19,59 @@ def InitScreen():
     frameEntry = Frame(g_Tk, pady=10, bg='#0000ff')
     frameEntry.pack(side="top", fill="x")
     frameList = Frame(g_Tk, padx=10, pady=10, bg='#ffff00')
-    frameList.pack(side="bottom", fill="both", expand=True)
+    frameList.pack(side="top", fill="x")
+    framePicture = Frame(g_Tk, padx=10, pady=10, bg='red')
+    framePicture.pack(side="top", fill="x")
+    
 # title 부분
     MainText = Label(frameTitle, font = fontTitle, text="[집 한번 사볼까?]")
-    MainText.pack(anchor="center", fill="both")
+    MainText.pack(side="left", fill="x")
+    sendEmailButton = Button(frameTitle, font = fontNormal, text='이메일') 
+    sendEmailButton.pack(side='right', padx=10, fill='y')
     global SearchListBox 
     LBScrollbar = Scrollbar(frameCombo)
     SearchListBox = Listbox(frameCombo, \
     font=fontNormal, activestyle='none', width=10, height=1, borderwidth=12, relief='ridge', yscrollcommand=LBScrollbar.set) 
     slist = ["도서관", "모범음식점", "마트", "문화공간"]
     for i, s in enumerate(slist): SearchListBox.insert(i, s)
-    SearchListBox.pack(side='left', padx=10, expand=True, \
-    fill="both")
+    SearchListBox.pack(side='left', padx=10, expand=True)
     LBScrollbar.pack(side="left")
     LBScrollbar.config(command=SearchListBox.yview)
-    sendEmailButton = Button(frameCombo, font = fontNormal, text='이메일') 
-    sendEmailButton.pack(side='right', padx=10, fill='y')
-    # 사용자 입력 부분
     global InputLabel
-    InputLabel = Entry(frameEntry, font = fontNormal, \
-     width = 26, borderwidth = 12, relief = 'ridge')
+    InputLabel = Entry(frameCombo, font = fontNormal, \
+     width = 10, borderwidth = 12, relief = 'ridge')
     InputLabel.pack(side="left", padx=10, expand=True)
-    SearchButton = Button(frameEntry, font = fontNormal, \
+    SearchButton = Button(frameCombo, font = fontNormal, \
     text="검색", command=onSearch)
     SearchButton.pack(side="right", padx=10, expand=True, fill='y')
+    # 사용자 입력 부분
+    
+    
     # 목록 부분
     global listBox
     LBScrollbar = Scrollbar(frameList)
     listBox = Listbox(frameList, selectmode='extended',\
-        font= fontNormal, width=10, height=15, \
-        borderwidth=12, relief='ridge', yscrollcommand=LBScrollbar.set)
+        font= fontNormal, width=5, height=5, \
+        borderwidth=5, relief='ridge')
     listBox.bind('<<ListboxSelect>>', event_for_listbox)
     listBox.pack(side='left', anchor='n', expand=True, fill="x")
+    listBox2 = Listbox(frameList, selectmode='extended',\
+        font= fontNormal, width=8, height=5, \
+        borderwidth=5, relief='ridge')
+    listBox2.bind('<<ListboxSelect>>', event_for_listbox)
+    listBox2.pack(side="right", padx=10, expand=True, fill='y')
+    #사진 부분
+    global graph
+    PictureBox = Listbox(framePicture, selectmode='extended',\
+        font= fontNormal, width=5, height=5, \
+        borderwidth=5, relief='ridge')
+    PictureBox.bind('<<ListboxSelect>>', event_for_listbox)
+    PictureBox.pack(side='left', anchor='n', expand=True, fill="x")
+    GraphBox = Listbox(framePicture, selectmode='extended',\
+        font= fontNormal, width=8, height=5, \
+        borderwidth=5, relief='ridge')
+    GraphBox.bind('<<ListboxSelect>>', event_for_listbox)
+    GraphBox.pack(side="right", padx=10, expand=True, fill='y')
 
 def onSearch(): # "검색" 버튼 이벤트처리
     global SearchListBox
@@ -75,7 +96,6 @@ def SearchLibrary(): # "검색" 버튼 -> "도서관"
         strXml = f.read().decode('utf-8')
     parseData = ElementTree.fromstring(strXml)
     elements = parseData.iter('row')
-def SearchLibrary(): # "검색" 버튼 -> "도서관" ………………………………
     i = 1
     for item in elements: # " row“ element들
         part_el = item.find('CODE_VALUE')
