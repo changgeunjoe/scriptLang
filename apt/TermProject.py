@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import font
+import sendMail
 g_Tk = Tk()
 g_Tk.geometry("400x600+450+100") # {width}x{height}+-{xpos}+-{ypos}
 def event_for_listbox(event): # 리스트 선택 시 내용 출력
@@ -28,6 +29,7 @@ def InitScreen():
     MainText.pack(side="left", fill="x")
     sendEmailButton = Button(frameTitle, font = fontNormal, text='이메일') 
     sendEmailButton.pack(side='right', padx=10, fill='y')
+    sendEmailButton.bind('<Button-1>', emailWindow)
     global SearchListBox 
     LBScrollbar = Scrollbar(frameCombo)
     SearchListBox = Listbox(frameCombo, \
@@ -107,6 +109,17 @@ def SearchLibrary(): # "검색" 버튼 -> "도서관"
     ' : ' + getStr(item.find('TEL_NO').text)
     listBox.insert(i-1, _text)
     i = i+1
+
+
+#이메일 버튼 클릭시 불리는 콜백 함수
+def emailWindow():
+    inputReceiveMail = '' # 이메일 입력 받고서 이 변수에 저장
+    inputText = ''#내용을 여기에 삽입
+    inputAptName = ''#메일에 들어갈 아파트 이름
+    inputRegion= ''#아파트 위치
+
+    #sendMail.clickEmail(inputReceiveMail, inputAptName, inputRegion)
+    
 
 
 InitScreen() # 화면 전체 구성
