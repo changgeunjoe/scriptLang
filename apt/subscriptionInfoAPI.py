@@ -1,4 +1,5 @@
 from http.client import HTTPSConnection
+import regionCode
 
 competitionApiAddress = 'https://infuser.odcloud.kr/api/stages/36148/api-docs?1644395106638'
 competitionConnect = ''
@@ -72,6 +73,15 @@ def getsellAptInfo():
     if conn == None :
         global sellAptInfoApiAddress
         connectOpenAPIServer(sellAptInfoConnect, sellAptInfoApiAddress)
+    uri = userURIBuilder("/ApplyhomeInfoCmpetRtSvc/v1/getCancResplLttotPblancCmpet", page= 1, perPage= 1, returnType = "JSON")
+    conn.request("GET", uri, None, #GET 요청
+    {"ApiKeyAuth": client_id, "ApiKeyAuth2": client_secret})
+    req = conn.getresponse()
+    print (req.status)
+    if int(req.status) == 200 : 
+        print("response complete!")
+    else:
+        print("error - response!")
 
 def getpriceApt():
     client_id = "WTdhSu8Xoa2qFTe9YL4yicpM%2BfSZpEp9NFAWZJDT9Uv%2BFTLLJ1CkIjIl3Kmbk7jUxg2Y8fep6Tz08BdBHpXw4g%3D%3D" 
@@ -80,3 +90,12 @@ def getpriceApt():
     if conn == None :
         global priceAptApiAddress
         connectOpenAPIServer(priceAptConnect, priceAptApiAddress)
+    uri = userURIBuilder("/HousePriceTrendSvc/v1/getHouseSaleDepositRate", page= 1, perPage= 1, returnType = "JSON", )
+    conn.request("GET", uri, None, #GET 요청
+    {"ApiKeyAuth": client_id, "ApiKeyAuth2": client_secret})
+    req = conn.getresponse()
+    print (req.status)
+    if int(req.status) == 200 : 
+        print("response complete!")
+    else:
+        print("error - response!")
