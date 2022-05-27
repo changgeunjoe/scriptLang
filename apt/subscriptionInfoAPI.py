@@ -73,7 +73,8 @@ def getsellAptInfo():
     if conn == None :
         global sellAptInfoApiAddress
         connectOpenAPIServer(sellAptInfoConnect, sellAptInfoApiAddress)
-    uri = userURIBuilder("/ApplyhomeInfoCmpetRtSvc/v1/getCancResplLttotPblancCmpet", page= 1, perPage= 1, returnType = "JSON")
+    uri = userURIBuilder("/ApplyhomeInfoDetailSvc/v1/getAPTLttotPblancDetail", page= 1, perPage= 1, returnType = "JSON")
+    #얘는 지역이 서울, 부산... 으로 입력 가능
     conn.request("GET", uri, None, #GET 요청
     {"ApiKeyAuth": client_id, "ApiKeyAuth2": client_secret})
     req = conn.getresponse()
@@ -90,7 +91,8 @@ def getpriceApt():
     if conn == None :
         global priceAptApiAddress
         connectOpenAPIServer(priceAptConnect, priceAptApiAddress)
-    uri = userURIBuilder("/HousePriceTrendSvc/v1/getHouseSaleDepositRate", page= 1, perPage= 1, returnType = "JSON", )
+    uri = userURIBuilder("/HousePriceTrendSvc/v1/getHouseSaleDepositRate", page= 1, perPage= 1, returnType = "JSON" )
+    #사용자가 지역 검색시 인자로 받아온 거 사용해야할듯 -> 인자는 서울 => regionCode[서울] 해서 넣어줘야됨
     conn.request("GET", uri, None, #GET 요청
     {"ApiKeyAuth": client_id, "ApiKeyAuth2": client_secret})
     req = conn.getresponse()
