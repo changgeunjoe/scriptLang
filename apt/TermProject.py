@@ -135,8 +135,8 @@ def emailWindow():
 
 ## 서울 검색시 결과
 
-root = Tk()
-root.geometry(f"{600}x{600}") 
+#root = Tk()
+#root.geometry(f"{600}x{600}") 
 res = subscriptionInfoAPI.getsellAptInfo("서울")
 if res['data'] != None:
     for x in res['data']:
@@ -149,6 +149,6 @@ if res['data'] != None:
             del(a[re:len(a)])        
             a = str(a)
         print(a)
-        m = atpMapRegion.mapWidget(root)
-        m.set_address(a)
-root.mainloop() 
+        #m = atpMapRegion.mapWidget(root)
+        #m.set_address(a)
+#root.mainloop() 
