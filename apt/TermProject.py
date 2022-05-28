@@ -1,8 +1,11 @@
 from tkinter import *
 from tkinter import font
+from typing import MappingView
 import sendMail
 import subscriptionInfoAPI
 import pprint
+import atpMapRegion
+
 g_Tk = Tk()
 g_Tk.geometry("400x600+450+100") # {width}x{height}+-{xpos}+-{ypos}
 def event_for_listbox(event): # 리스트 선택 시 내용 출력
@@ -131,8 +134,21 @@ def emailWindow():
 #g_Tk.mainloop()
 
 ## 서울 검색시 결과
+
+root = Tk()
+root.geometry(f"{600}x{600}") 
 res = subscriptionInfoAPI.getsellAptInfo("서울")
 if res['data'] != None:
     for x in res['data']:
         print(x["HOUSE_NM"])
         print(x["HSSPLY_ADRES"])
+        a = str(x["HSSPLY_ADRES"])
+        if a.find('(') != -1:
+            re = a.find('(')
+            a = list(a)
+            del(a[re:len(a)])        
+            a = str(a)
+        print(a)
+        m = atpMapRegion.mapWidget(root)
+        m.set_address(a)
+root.mainloop() 
