@@ -4,7 +4,7 @@ from typing import MappingView
 import sendMail
 import subscriptionInfoAPI
 import pprint
-import atpMapRegion
+#import atpMapRegion
 
 g_Tk = Tk()
 g_Tk.geometry("400x600+450+100") # {width}x{height}+-{xpos}+-{ypos}
@@ -39,7 +39,7 @@ def InitScreen():
     LBScrollbar = Scrollbar(frameCombo)
     SearchListBox = Listbox(frameCombo, \
     font=fontNormal, activestyle='none', width=10, height=1, borderwidth=12, relief='ridge', yscrollcommand=LBScrollbar.set) 
-    slist = ["도서관", "모범음식점", "마트", "문화공간"]
+    slist = ["서울", "경기도", "강원도", "부산","동탄"]
     for i, s in enumerate(slist): SearchListBox.insert(i, s)
     SearchListBox.pack(side='left', padx=10, expand=True)
     LBScrollbar.pack(side="left")
@@ -62,11 +62,11 @@ def InitScreen():
         borderwidth=5, relief='ridge')
     listBox.bind('<<ListboxSelect>>', event_for_listbox)
     listBox.pack(side='left', anchor='n', expand=True, fill="x")
-    listBox2 = Listbox(frameList, selectmode='extended',\
-        font= fontNormal, width=8, height=5, \
-        borderwidth=5, relief='ridge')
-    listBox2.bind('<<ListboxSelect>>', event_for_listbox)
-    listBox2.pack(side="right", padx=10, expand=True, fill='y')
+    # listBox2 = Listbox(frameList, selectmode='extended',\
+    #     font= fontNormal, width=8, height=5, \
+    #     borderwidth=5, relief='ridge')
+    # listBox2.bind('<<ListboxSelect>>', event_for_listbox)
+    # listBox2.pack(side="right", padx=10, expand=True, fill='y')
     #사진 부분
     global graph
     PictureBox = Listbox(framePicture, selectmode='extended',\
@@ -85,7 +85,7 @@ def onSearch(): # "검색" 버튼 이벤트처리
     sels = SearchListBox.curselection()
     iSearchIndex = 0 if len(sels) == 0 else SearchListBox.curselection()[0]
     if iSearchIndex == 0: 
-        pass
+        SearchLibrary()
     elif iSearchIndex == 1:
         pass 
     elif iSearchIndex == 2:
@@ -99,23 +99,20 @@ def onSearch(): # "검색" 버튼 이벤트처리
 def getStr(s): 
     return '' if not s else s
 def SearchLibrary(): # "검색" 버튼 -> "도서관"
-    from xml.etree import ElementTree  
-    global listBox
-    listBox.delete(0,listBox.size()) 
-    with open('서울도서관.xml', 'rb') as f: 
-        strXml = f.read().decode('utf-8')
-    parseData = ElementTree.fromstring(strXml)
-    elements = parseData.iter('row')
-    i = 1
-    for item in elements: # " row“ element들
-        part_el = item.find('CODE_VALUE')
-        if InputLabel.get() not in part_el.text:
-         continue 
-        _text = '[' + str(i) + '] ' + \
-    getStr(item.find('LBRRY_NAME').text) + \
-    ' : ' + getStr(item.find('ADRES').text) + \
-    ' : ' + getStr(item.find('TEL_NO').text)
-    listBox.insert(i-1, _text)
+    i=1
+    res = subscriptionInfoAPI.getsellAptInfo("서울")
+    if res['data'] != None:
+        for x in res['data']:
+            x["HOUSE_NM"]
+            x["HSSPLY_ADRES"]
+            a = str(x["HSSPLY_ADRES"])
+            if a.find('(') != -1:
+                re = a.find('(')
+                a = list(a)
+                del(a[re:len(a)])        
+                a = str(a)
+                print(a)
+        listBox.insert(i-1, a)
     i = i+1
 
 
@@ -130,25 +127,28 @@ def emailWindow():
     
 
 
-#InitScreen() # 화면 전체 구성
-#g_Tk.mainloop()
+
 
 ## 서울 검색시 결과
 
 #root = Tk()
 #root.geometry(f"{600}x{600}") 
-res = subscriptionInfoAPI.getsellAptInfo("서울")
-if res['data'] != None:
-    for x in res['data']:
-        print(x["HOUSE_NM"])
-        print(x["HSSPLY_ADRES"])
-        a = str(x["HSSPLY_ADRES"])
-        if a.find('(') != -1:
-            re = a.find('(')
-            a = list(a)
-            del(a[re:len(a)])        
-            a = str(a)
-        print(a)
+# res = subscriptionInfoAPI.getsellAptInfo("서울")
+# if res['data'] != None:
+#     for x in res['data']:
+#         print(x["HOUSE_NM"])
+#         print(x["HSSPLY_ADRES"])
+#         a = str(x["HSSPLY_ADRES"])
+#         if a.find('(') != -1:
+#             re = a.find('(')
+#             a = list(a)
+#             del(a[re:len(a)])        
+#             a = str(a)
+#         print(a)
         #m = atpMapRegion.mapWidget(root)
         #m.set_address(a)
 #root.mainloop() 
+#root.mainloop() 
+#print(listBox)
+InitScreen() # 화면 전체 구성
+g_Tk.mainloop()
