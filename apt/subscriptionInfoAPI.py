@@ -1,17 +1,21 @@
+from codecs import utf_16_be_encode
+from encodings import utf_8
 from http.client import HTTPSConnection
 import regionCode
 import json
+import urllib
 competitionApiAddress = 'https://infuser.odcloud.kr/api/stages/36148/api-docs?1644395106638'
-competitionConnect = ''
-sellAptInfoApiAddress = 'https://infuser.odcloud.kr/api/stages/37000/api-docs?1643022751478'
-sellAptInfoConnect = ''
+competitionConnect = None
+sellAptInfoApiAddress = 'infuser.odcloud.kr'
+sellAptInfoConnect = None
 priceAptApiAddress = 'https://infuser.odcloud.kr/api/stages/27803/api-docs?1646718284600'
-priceAptConnect = ''
+priceAptConnect = None
 
 
-def connectOpenAPIServer(conn, server):   
+def connectOpenAPIServer(server):   
     conn = HTTPSConnection(server) 
     conn.set_debuglevel(1)
+    return conn
 
 
 def userURIBuilder(uri, **user): 
@@ -20,6 +24,26 @@ def userURIBuilder(uri, **user):
         str += key + "=" + user[key] + "&"
     return str
 
+def getsellAptInfo(search):
+    serviceKey = "WTdhSu8Xoa2qFTe9YL4yicpM+fSZpEp9NFAWZJDT9Uv+FTLLJ1CkIjIl3Kmbk7jUxg2Y8fep6Tz08BdBHpXw4g=="
+    Autho = "WTdhSu8Xoa2qFTe9YL4yicpM%2BfSZpEp9NFAWZJDT9Uv%2BFTLLJ1CkIjIl3Kmbk7jUxg2Y8fep6Tz08BdBHpXw4g%3D%3D" 
+    global sellAptInfoConnect
+    if sellAptInfoConnect == None :
+        global sellAptInfoApiAddress        
+        sellAptInfoConnect = connectOpenAPIServer(sellAptInfoApiAddress)
+    uri = userURIBuilder("/ApplyhomeInfoDetailSvc/v1/getAPTLttotPblancDetail", page= '1', perPage= '10', returnType = "JSON" , serviceKey = serviceKey)    
+    #uri += urllib.parse.quote('cond[SUBSCRPT_AREA_CODE_NM]') + '=' + urllib.parse.quote(search)
+    #얘는 지역이 서울, 부산... 으로 입력 가능
+    sellAptInfoConnect.request("GET", url = uri, body = None, headers = {'Authorization': 'Infuser ' + Autho})
+    req = sellAptInfoConnect.getresponse()
+    print (req.status)
+    if int(req.status) == 200:
+        print("response complete!")
+        jsonData = json.load(req)
+        return jsonData
+    else:
+        print("error - response!")
+        return None
 
 def getcompetitionRatio():
     client_id = "WTdhSu8Xoa2qFTe9YL4yicpM%2BfSZpEp9NFAWZJDT9Uv%2BFTLLJ1CkIjIl3Kmbk7jUxg2Y8fep6Tz08BdBHpXw4g%3D%3D"
@@ -28,7 +52,7 @@ def getcompetitionRatio():
     if competitionConnect == None :
         global competitionApiAddress
         connectOpenAPIServer(competitionConnect, competitionApiAddress)
-    uri = userURIBuilder("/ApplyhomeInfoCmpetRtSvc/v1/getCancResplLttotPblancCmpet", page= 1, perPage= 1, returnType = "JSON")
+    uri = userURIBuilder(sellAptInfoApiAddress + "/ApplyhomeInfoCmpetRtSvc/v1/getCancResplLttotPblancCmpet", page= 1, perPage= 1, returnType = "JSON")
     competitionConnect.request("GET", uri, None, #GET 요청
     {"ApiKeyAuth": client_id, "ApiKeyAuth2": client_secret})
     req = competitionConnect.getresponse()
@@ -40,26 +64,6 @@ def getcompetitionRatio():
 
 
 
-def getsellAptInfo(search):
-    client_id = "WTdhSu8Xoa2qFTe9YL4yicpM%2BfSZpEp9NFAWZJDT9Uv%2BFTLLJ1CkIjIl3Kmbk7jUxg2Y8fep6Tz08BdBHpXw4g%3D%3D" 
-    client_secret = "WTdhSu8Xoa2qFTe9YL4yicpM+fSZpEp9NFAWZJDT9Uv+FTLLJ1CkIjIl3Kmbk7jUxg2Y8fep6Tz08BdBHpXw4g=="
-    global sellAptInfoConnect
-    if sellAptInfoConnect == None :
-        global sellAptInfoApiAddress
-        connectOpenAPIServer(sellAptInfoConnect, sellAptInfoApiAddress)
-    uri = userURIBuilder("/ApplyhomeInfoDetailSvc/v1/getAPTLttotPblancDetail", page= 1, perPage= 1, returnType = "JSON", HOUSE_MANAGE_NO = search)
-    #얘는 지역이 서울, 부산... 으로 입력 가능
-    sellAptInfoConnect.request("GET", uri, None, #GET 요청
-    {"ApiKeyAuth": client_id, "ApiKeyAuth2": client_secret})
-    req = sellAptInfoConnect.getresponse()
-    print (req.status)
-    if int(req.status) == 200 : 
-        print("response complete!")
-        jsonData = json.load(req)
-        return jsonData
-    else:
-        print("error - response!")
-        return None
 
 
 def getpriceApt():

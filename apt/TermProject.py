@@ -82,7 +82,7 @@ def onSearch(): # "검색" 버튼 이벤트처리
     iSearchIndex = 0 if len(sels) == 0 else SearchListBox.curselection()[0]
     if iSearchIndex == 0: 
         pass
-    elif iSearchIndex == 1: 
+    elif iSearchIndex == 1:
         pass 
     elif iSearchIndex == 2:
         pass 
@@ -126,5 +126,10 @@ def emailWindow():
     
 
 
-InitScreen() # 화면 전체 구성
-g_Tk.mainloop()
+#InitScreen() # 화면 전체 구성
+#g_Tk.mainloop()
+res = subscriptionInfoAPI.getsellAptInfo("서울")
+if res != None:
+    for x in res:
+        print(x["HOUSE_NM"])
+        print(x["HSSPLY_ADRES"])
