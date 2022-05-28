@@ -28,6 +28,8 @@ def InitScreen():
     frameList.pack(side="top", fill="x")
     framePicture = Frame(g_Tk, padx=10, pady=10, bg='red')
     framePicture.pack(side="top", fill="x")
+    frameMap = Frame(g_Tk, padx=10, pady=10, bg='red')
+    frameMap.pack(side="top", fill="x")
     
 # title 부분
     MainText = Label(frameTitle, font = fontTitle, text="[집 한번 사볼까?]")
@@ -79,6 +81,10 @@ def InitScreen():
         borderwidth=5, relief='ridge')
     GraphBox.bind('<<ListboxSelect>>', event_for_listbox)
     GraphBox.pack(side="right", padx=10, expand=True, fill='y')
+    #지도 부분
+    MapButton = Button(frameMap, font = fontNormal, \
+    text="지도", command=onSearch)
+    MapButton.pack(side="right", padx=10, expand=True, fill='y')
 
 def onSearch(): # "검색" 버튼 이벤트처리
     global SearchListBox
@@ -92,6 +98,7 @@ def onSearch(): # "검색" 버튼 이벤트처리
         pass 
     elif iSearchIndex == 3:
         global InputLabel
+        print(InputLabel.get())
         #subscriptionInfoAPI.getsellAptInfo(sels) # 연결 안됨
         pass # 유틸리티 함수: 문자열 내용 있을 때만 사용
 
@@ -100,7 +107,7 @@ def getStr(s):
     return '' if not s else s
 def SearchLibrary(): # "검색" 버튼 -> "도서관"
     i=1
-    res = subscriptionInfoAPI.getsellAptInfo("서울")
+    res = subscriptionInfoAPI.getsellAptInfo(InputLabel.get())
     if res['data'] != None:
         for x in res['data']:
             x["HOUSE_NM"]
@@ -111,7 +118,9 @@ def SearchLibrary(): # "검색" 버튼 -> "도서관"
                 a = list(a)
                 del(a[re:len(a)])        
                 a = str(a)
-                print(a)
+                #print(a)
+
+                
         listBox.insert(i-1, a)
     i = i+1
 
