@@ -1,5 +1,5 @@
 
-regionCode = []
+regionCode = {}
 regionCode['11000']  = '서울'
 regionCode['종로구'] = '11110'	
 regionCode['중구'] = '11140'	

@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import font
 import sendMail
+import subscriptionInfoAPI
 g_Tk = Tk()
 g_Tk.geometry("400x600+450+100") # {width}x{height}+-{xpos}+-{ypos}
 def event_for_listbox(event): # 리스트 선택 시 내용 출력
@@ -78,16 +79,19 @@ def InitScreen():
 def onSearch(): # "검색" 버튼 이벤트처리
     global SearchListBox
     sels = SearchListBox.curselection()
-    iSearchIndex = \
-        0 if len(sels) == 0 else SearchListBox.curselection()[0]
+    iSearchIndex = 0 if len(sels) == 0 else SearchListBox.curselection()[0]
     if iSearchIndex == 0: 
-        SearchLibrary()
+        pass
     elif iSearchIndex == 1: 
         pass 
     elif iSearchIndex == 2:
         pass 
     elif iSearchIndex == 3:
+        global InputLabel
+        #subscriptionInfoAPI.getsellAptInfo(sels) # 연결 안됨
         pass # 유틸리티 함수: 문자열 내용 있을 때만 사용
+
+
 def getStr(s): 
     return '' if not s else s
 def SearchLibrary(): # "검색" 버튼 -> "도서관"
