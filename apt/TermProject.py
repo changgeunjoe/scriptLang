@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import font
 import sendMail
 import subscriptionInfoAPI
+import pprint
 g_Tk = Tk()
 g_Tk.geometry("400x600+450+100") # {width}x{height}+-{xpos}+-{ypos}
 def event_for_listbox(event): # 리스트 선택 시 내용 출력
@@ -128,8 +129,10 @@ def emailWindow():
 
 #InitScreen() # 화면 전체 구성
 #g_Tk.mainloop()
+
+## 서울 검색시 결과
 res = subscriptionInfoAPI.getsellAptInfo("서울")
-if res != None:
-    for x in res:
+if res['data'] != None:
+    for x in res['data']:
         print(x["HOUSE_NM"])
         print(x["HSSPLY_ADRES"])
