@@ -7,6 +7,9 @@ import pprint
 #import atpMapRegion
 import tkintermapview
 
+textForMap = ''
+addressForMap = ''
+
 g_Tk = Tk()
 g_Tk.geometry("400x600+450+100") # {width}x{height}+-{xpos}+-{ypos}
 def event_for_listbox(event): # 리스트 선택 시 내용 출력
@@ -15,6 +18,8 @@ def event_for_listbox(event): # 리스트 선택 시 내용 출력
         index = selection[0]
         data = event.widget.get(index)
         print(data) 
+
+        
 def InitScreen(): 
     fontTitle = font.Font(g_Tk, size=18, weight='bold', family = '바탕체')
     fontNormal = font.Font(g_Tk, size=15, weight='bold')
@@ -131,8 +136,8 @@ def mapClicked():
     mapRoot.geometry(f"{600}x{600}") 
     mapwidget = tkintermapview.TkinterMapView(mapRoot, width=800, height=500, corner_radius=0)
     mapwidget.pack()
-    marker_1 = mapwidget.set_address('서울특별시 서초구 양재대로2길 8', marker=True)
-    marker_1.set_text("한국공학대학교")
+    marker_1 = mapwidget.set_address(addressForMap, marker=True)
+    marker_1.set_text(textForMap)
     mapwidget.set_zoom(15)
     
 
