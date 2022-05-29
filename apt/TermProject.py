@@ -24,6 +24,7 @@ def event_for_listbox(event): # 리스트 선택 시 내용 출력
         textForMap = houseNameList[data]
         print(data) 
 
+#
 
 def InitScreen(): 
     fontTitle = font.Font(g_Tk, size=18, weight='bold', family = '바탕체')
