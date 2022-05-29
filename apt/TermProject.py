@@ -28,7 +28,7 @@ def event_for_listbox(event): # 리스트 선택 시 내용 출력
 
 def InitScreen(): 
     fontTitle = font.Font(g_Tk, size=18, weight='bold', family = '바탕체')
-    fontNormal = font.Font(g_Tk, size=15, weight='bold')
+    fontNormal = font.Font(g_Tk, size=15, weight='bold') 
     # 화면 전체 구도 잡기. 
     frameTitle = Frame(g_Tk, padx=10, pady=10, bg='#ff0000')
     frameTitle.pack(side="top", fill="x")
@@ -115,6 +115,8 @@ def onSearch(): # "검색" 버튼 이벤트처리
         pass # 유틸리티 함수: 문자열 내용 있을 때만 사용
 
 
+
+
 def getStr(s): 
     return '' if not s else s
 def SearchLibrary(): # "검색" 버튼 -> "도서관"
@@ -157,17 +159,32 @@ def mapClicked():
 
 #이메일 버튼 클릭시 불리는 콜백 함수
 def emailWindow():
+    global g_Tk;
+  
+  
     #mailView = Toplevel()
-
-    inputReceiveMail = 'shp9826@naver.com' # 이메일 입력 받고서 이 변수에 저장
+    toplevel=Toplevel(g_Tk)
+    frameTitle = Frame(toplevel, padx=10, pady=10, bg='#ff0000')
+    frameTitle.pack(side="top", fill="x")
+    fontNormal = font.Font(toplevel, size=15, weight='bold')
+    global InputEmail 
+    toplevel.geometry("320x200+820+100")
+    InputEmail = Entry(frameTitle, font = fontNormal, \
+    width = 10, borderwidth = 12, relief = 'ridge')
+    InputEmail.pack(side="left", padx=10, expand=True)
+    SearchButton = Button(frameTitle, font = fontNormal, \
+    text="검색", command=onEmail)
+    SearchButton.pack(side="right", padx=10, expand=True, fill='y')
+     
+    
+def onEmail():
+    inputReceiveMail = InputEmail.get() # 이메일 입력 받고서 이 변수에 저장
     inputText = ''#내용을 여기에 삽입
     global textForMap
     global addressForMap
     inputAptName = textForMap#메일에 들어갈 아파트 이름
     inputRegion= addressForMap#아파트 위치
-    sendMail.clickEmail(inputReceiveMail,inputAptName, inputRegion)    
-    
-
+    sendMail.clickEmail(inputReceiveMail,inputAptName, inputRegion)   
 
 
 
