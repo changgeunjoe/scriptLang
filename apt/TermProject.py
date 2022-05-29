@@ -193,7 +193,10 @@ def onEmail():
         # 이때 청약 주소 정보가 정확하지 않아 보낼 수 없습니다. 출력
         return
     else:
-        sendMail.clickEmail(inputReceiveMail,inputAptName, inputRegion)   
+        if(inputAptName == '' or inputRegion == '')
+            #내용을 검색 후 이용해주세요. 출력
+        else:
+            sendMail.clickEmail(inputReceiveMail,inputAptName, inputRegion)   
 
 
 
