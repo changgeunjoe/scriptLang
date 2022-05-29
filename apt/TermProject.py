@@ -5,6 +5,7 @@ import sendMail
 import subscriptionInfoAPI
 import pprint
 #import atpMapRegion
+import tkintermapview
 
 g_Tk = Tk()
 g_Tk.geometry("400x600+450+100") # {width}x{height}+-{xpos}+-{ypos}
@@ -83,7 +84,7 @@ def InitScreen():
     GraphBox.pack(side="right", padx=10, expand=True, fill='y')
     #지도 부분
     MapButton = Button(frameMap, font = fontNormal, \
-    text="지도", command=onSearch)
+    text="지도", command= mapClicked)
     MapButton.pack(side="right", padx=10, expand=True, fill='y')
 
 def onSearch(): # "검색" 버튼 이벤트처리
@@ -124,6 +125,16 @@ def SearchLibrary(): # "검색" 버튼 -> "도서관"
         listBox.insert(i-1, a)
     i = i+1
 
+
+def mapClicked():
+    mapRoot = Toplevel()
+    mapRoot.geometry(f"{600}x{600}") 
+    mapwidget = tkintermapview.TkinterMapView(mapRoot, width=800, height=500, corner_radius=0)
+    mapwidget.pack()
+    marker_1 = mapwidget.set_address('서울특별시 서초구 양재대로2길 8', marker=True)
+    marker_1.set_text("한국공학대학교")
+    mapwidget.set_zoom(15)
+    
 
 #이메일 버튼 클릭시 불리는 콜백 함수
 def emailWindow():
