@@ -10,6 +10,7 @@ import tkintermapview
 textForMap = ''
 addressForMap = ''
 
+houseNameList = dict()
 g_Tk = Tk()
 g_Tk.geometry("400x600+450+100") # {width}x{height}+-{xpos}+-{ypos}
 def event_for_listbox(event): # 리스트 선택 시 내용 출력
@@ -17,6 +18,10 @@ def event_for_listbox(event): # 리스트 선택 시 내용 출력
     if selection:
         index = selection[0]
         data = event.widget.get(index)
+        global addressForMap
+        global textForMap
+        addressForMap = data
+        textForMap = houseNameList[data]
         print(data) 
 
 
@@ -40,7 +45,7 @@ def InitScreen():
 # title 부분
     MainText = Label(frameTitle, font = fontTitle, text="[집 한번 사볼까?]")
     MainText.pack(side="left", fill="x")
-    sendEmailButton = Button(frameTitle, font = fontNormal, text='이메일') 
+    sendEmailButton = Button(frameTitle, font = fontNormal, text='이메일')
     sendEmailButton.pack(side='right', padx=10, fill='y')
     sendEmailButton.bind('<Button-1>', emailWindow)
     global SearchListBox 
@@ -117,14 +122,18 @@ def SearchLibrary(): # "검색" 버튼 -> "도서관"
     if res['data'] != None:
         for x in res['data']:
             x["HOUSE_NM"]
-            x["HSSPLY_ADRES"]
             a = str(x["HSSPLY_ADRES"])
             if a.find('(') != -1:
                 re = a.find('(')
+                temp = a[:re]                
                 a = list(a)
                 del(a[re:len(a)])
                 a = str(a)
-                #print(a)    
+                a = temp
+                print(a)    
+                global houseNameList
+                houseNameList.clear()
+                houseNameList[a] = x["HOUSE_NM"]
                 listBox.insert(i-1, a)
                 i = i+1
 
@@ -134,7 +143,13 @@ def mapClicked():
     mapRoot.geometry(f"{600}x{600}") 
     mapwidget = tkintermapview.TkinterMapView(mapRoot, width=800, height=500, corner_radius=0)
     mapwidget.pack()
+    global addressForMap
+    global textForMap
     marker_1 = mapwidget.set_address(addressForMap, marker=True)
+    if not marker_1:
+        mapwidget.destroy()
+        mapRoot.destroy()
+        return
     marker_1.set_text(textForMap)
     mapwidget.set_zoom(15)
     
