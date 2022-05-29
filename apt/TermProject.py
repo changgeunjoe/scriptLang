@@ -19,7 +19,7 @@ def event_for_listbox(event): # 리스트 선택 시 내용 출력
         data = event.widget.get(index)
         print(data) 
 
-        
+
 def InitScreen(): 
     fontTitle = font.Font(g_Tk, size=18, weight='bold', family = '바탕체')
     fontNormal = font.Font(g_Tk, size=15, weight='bold')
@@ -122,13 +122,11 @@ def SearchLibrary(): # "검색" 버튼 -> "도서관"
             if a.find('(') != -1:
                 re = a.find('(')
                 a = list(a)
-                del(a[re:len(a)])        
+                del(a[re:len(a)])
                 a = str(a)
-                #print(a)
-
-                
-        listBox.insert(i-1, a)
-    i = i+1
+                #print(a)    
+                listBox.insert(i-1, a)
+                i = i+1
 
 
 def mapClicked():
