@@ -18,7 +18,7 @@ def clickEmail(reciveLocal, aptName, region):
     msg['From'] = senderAddr 
     msg['To'] = recipientAddr # 파일로부터 읽어서 MIME 문서를 생성. 
 
-    msg['Subject'] = region +"의 위치한" + aptName + "아파트는 어떤 청약~~~"
+    msg['Subject'] = region +"의 위치한" + aptName + "아파트는 청약이 존재합니다."
 
 #로고(사진) 첨부
     #htmlFD = open("logo.html", 'rb')

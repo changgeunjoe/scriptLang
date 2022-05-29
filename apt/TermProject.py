@@ -45,9 +45,9 @@ def InitScreen():
 # title 부분
     MainText = Label(frameTitle, font = fontTitle, text="[집 한번 사볼까?]")
     MainText.pack(side="left", fill="x")
-    sendEmailButton = Button(frameTitle, font = fontNormal, text='이메일')
+    sendEmailButton = Button(frameTitle, font = fontNormal, text='이메일', command = emailWindow)
     sendEmailButton.pack(side='right', padx=10, fill='y')
-    sendEmailButton.bind('<Button-1>', emailWindow)
+   # sendEmailButton.bind('<Button-1>', emailWindow)
     global SearchListBox 
     LBScrollbar = Scrollbar(frameCombo)
     SearchListBox = Listbox(frameCombo, \
@@ -156,12 +156,15 @@ def mapClicked():
 
 #이메일 버튼 클릭시 불리는 콜백 함수
 def emailWindow():
-    inputReceiveMail = '' # 이메일 입력 받고서 이 변수에 저장
-    inputText = ''#내용을 여기에 삽입
-    inputAptName = ''#메일에 들어갈 아파트 이름
-    inputRegion= ''#아파트 위치
+    #mailView = Toplevel()
 
-    #sendMail.clickEmail(inputReceiveMail, inputAptName, inputRegion)
+    inputReceiveMail = 'shp9826@naver.com' # 이메일 입력 받고서 이 변수에 저장
+    inputText = ''#내용을 여기에 삽입
+    global textForMap
+    global addressForMap
+    inputAptName = textForMap#메일에 들어갈 아파트 이름
+    inputRegion= addressForMap#아파트 위치
+    sendMail.clickEmail(inputReceiveMail,inputAptName, inputRegion)    
     
 
 
