@@ -159,9 +159,7 @@ def mapClicked():
 
 #이메일 버튼 클릭시 불리는 콜백 함수
 def emailWindow():
-    global g_Tk;
-  
-  
+    global g_Tk
     #mailView = Toplevel()
     toplevel=Toplevel(g_Tk)
     frameTitle = Frame(toplevel, padx=10, pady=10, bg='#ff0000')
@@ -184,7 +182,18 @@ def onEmail():
     global addressForMap
     inputAptName = textForMap#메일에 들어갈 아파트 이름
     inputRegion= addressForMap#아파트 위치
-    sendMail.clickEmail(inputReceiveMail,inputAptName, inputRegion)   
+    mapRoot = Toplevel()
+    mapRoot.geometry(f"{600}x{600}") 
+    mapwidget = tkintermapview.TkinterMapView(mapRoot, width=800, height=500, corner_radius=0)
+    mapwidget.pack()
+    marker_1 = mapwidget.set_address(inputRegion, marker=True)
+    if not marker_1:
+        mapwidget.destroy()
+        mapRoot.destroy()
+        # 이때 청약 주소 정보가 정확하지 않아 보낼 수 없습니다. 출력
+        return
+    else:
+        sendMail.clickEmail(inputReceiveMail,inputAptName, inputRegion)   
 
 
 
