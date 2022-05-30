@@ -21,8 +21,10 @@ def event_for_listbox(event): # 리스트 선택 시 내용 출력
         global addressForMap
         global textForMap
         addressForMap = data
+        global houseNameList
         textForMap = houseNameList[data]
-        print(data) 
+        print(addressForMap)
+        print(textForMap)
 
 #
 
@@ -121,6 +123,8 @@ def getStr(s):
     return '' if not s else s
 def SearchLibrary(): # "검색" 버튼 -> "도서관"
     i=1
+    global houseNameList
+    houseNameList.clear()
     res = subscriptionInfoAPI.getsellAptInfo(InputLabel.get())
     if res['data'] != None:
         for x in res['data']:
@@ -128,14 +132,12 @@ def SearchLibrary(): # "검색" 버튼 -> "도서관"
             a = str(x["HSSPLY_ADRES"])
             if a.find('(') != -1:
                 re = a.find('(')
-                temp = a[:re]                
-                a = list(a)
-                del(a[re:len(a)])
-                a = str(a)
+                temp = a[:re - 1]                
+                # a = list(a)
+                # del(a[re:len(a) - 1])
+                # a = str(a)
                 a = temp
                 print(a)    
-                global houseNameList
-                houseNameList.clear()
                 houseNameList[a] = x["HOUSE_NM"]
                 listBox.insert(i-1, a)
                 i = i+1
@@ -193,6 +195,8 @@ def onEmail():
         # 이때 청약 주소 정보가 정확하지 않아 보낼 수 없습니다. 출력
         return
     else:
+        mapwidget.destroy()
+        mapRoot.destroy()
         if(inputAptName == '' or inputRegion == ''):
             pass
             #내용을 검색 후 이용해주세요. 출력
