@@ -128,29 +128,20 @@ def SearchLibrary(): # "검색" 버튼 -> "도서관"
     res = subscriptionInfoAPI.getsellAptInfo(InputLabel.get())
     if res['data'] != None:
         houseNameListT = []
-        for x in res['data']:
-            x["HOUSE_NM"]
+        for x in res['data']:            
             a = str(x["HSSPLY_ADRES"])
             if a.find('(') != -1:
                 re = a.find('(')
-                temp = a[:re - 1]                
-                # a = list(a)
-                # del(a[re:len(a) - 1])
-                # a = str(a)
+                temp = a[:re - 1]
                 a = temp
-                print(a)
-                if 0 != len(houseNameList):
-                    for key, val in houseNameList.items():
-                        if key not in houseNameListT:
-                            houseNameListT.append(a)
-                            houseNameList[a] = x["HOUSE_NM"]
-                            listBox.insert(i-1, a)
-                            i = i+1
-                else:
-                    houseNameListT.append(a)
-                    houseNameList[a] = x["HOUSE_NM"]
-                    listBox.insert(i-1, a)
-                    i = i+1
+                print(a)                
+            
+            if a in houseNameListT:
+                continue
+            houseNameListT.append(a)
+            houseNameList[a] = x["HOUSE_NM"]
+            listBox.insert(i-1, a)
+            i = i+1
 
 
 def mapClicked():
