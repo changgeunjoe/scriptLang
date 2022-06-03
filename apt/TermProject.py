@@ -127,6 +127,7 @@ def SearchLibrary(): # "검색" 버튼 -> "도서관"
     houseNameList.clear()
     res = subscriptionInfoAPI.getsellAptInfo(InputLabel.get())
     if res['data'] != None:
+        houseNameListT = []
         for x in res['data']:
             x["HOUSE_NM"]
             a = str(x["HSSPLY_ADRES"])
@@ -137,10 +138,19 @@ def SearchLibrary(): # "검색" 버튼 -> "도서관"
                 # del(a[re:len(a) - 1])
                 # a = str(a)
                 a = temp
-                print(a)    
-                houseNameList[a] = x["HOUSE_NM"]
-                listBox.insert(i-1, a)
-                i = i+1
+                print(a)
+                if 0 != len(houseNameList):
+                    for key, val in houseNameList.items():
+                        if key not in houseNameListT:
+                            houseNameListT.append(a)
+                            houseNameList[a] = x["HOUSE_NM"]
+                            listBox.insert(i-1, a)
+                            i = i+1
+                else:
+                    houseNameListT.append(a)
+                    houseNameList[a] = x["HOUSE_NM"]
+                    listBox.insert(i-1, a)
+                    i = i+1
 
 
 def mapClicked():
