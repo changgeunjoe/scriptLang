@@ -26,7 +26,7 @@ class Playertext(Label):
         global window
         super().__init__(window, width=13, height=1)   
 
-        super().grid(row = row, column = column);
+        super().grid(row = row, column = column)
         if(Cellnums==0):
             super().configure(text=  "플레이어 수")
         else:
@@ -37,7 +37,7 @@ class PlayerInput(Entry):
     def __init__(self, row = 0, column = 0, Cellnums=0):
         global window
         super().__init__(window, width=13, height=1)   
-        super().grid(row = row, column = column);
+        super().grid(row = row, column = column)
         
 def StartInitScreen():
     global window
@@ -65,5 +65,52 @@ def StartInitScreen():
 def main():
     StartInitScreen()
 
+def numScore(inputN, playerDice):#uppersection 1~6
+    res = 0
+    for i in range(6):
+        if inputN == playerDice[i]:
+            res += 1
+    return (inputN, res)
+
+def threeOfKind(playerDice):
+    for i in range(6):
+        equalCnt = 0    
+        for j in range(i + 1, 6 - i):
+            if playerDice[i] == playerDice[j]:
+                equalCnt += 1
+        if equalCnt >= 3:
+            return True
+    return False
+
+def fourOfKind(playerDice):
+    for i in range(6):
+        equalCnt = 0    
+        for j in range(i + 1, 6 - i):
+            if playerDice[i] == playerDice[j]:
+                equalCnt += 1
+        if equalCnt >= 4:
+            return True
+    return False
+
+def fullHouse(playerDice):
+    localDice = playerDice
+    list(localDice).sort()
+    for i in range(0, 5):
+        if i != i+1 and i == 2:
+            if localDice[3] == localDice[4]:
+                return True
+        elif i != i+1 and i == 1:
+            if localDice[2] == localDice[3] and localDice[3] == localDice[4]:
+                return True
+    return False
+
+def smallStraight():
+    pass
+
+def largeStraight():
+    pass
+
+def yahtzee():
+    pass
 
 main()
