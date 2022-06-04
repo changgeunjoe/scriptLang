@@ -11,6 +11,14 @@ textForMap = ''
 addressForMap = ''
 
 houseNameList = dict()
+houseStartApply = dict()#접수
+houseEndApply = dict()
+housePrizeDate = dict()#당첨자 발표일
+houseEngineerCompany = dict()#건설업체
+contactStartDate = dict()#계약 시작일
+contactEndDate = dict()#계약 종료일
+
+
 g_Tk = Tk()
 g_Tk.geometry("400x600+450+100") # {width}x{height}+-{xpos}+-{ypos}
 def event_for_listbox(event): # 리스트 선택 시 내용 출력
@@ -124,11 +132,24 @@ def getStr(s):
 def SearchLibrary(): # "검색" 버튼 -> "도서관"
     i=1
     global houseNameList
+    global houseStartApply
+    global houseEndApply
+    global housePrizeDate
+    global houseEngineerCompany
+    global contactStartDate
+    global contactEndDate
     houseNameList.clear()
+    houseStartApply.clear()
+    houseEndApply.clear()
+    housePrizeDate.clear()
+    houseEngineerCompany.clear()
+    contactStartDate.clear()
+    contactEndDate.clear()
+    
     res = subscriptionInfoAPI.getsellAptInfo(InputLabel.get())
     if res['data'] != None:
         houseNameListT = []
-        for x in res['data']:            
+        for x in res['data']:
             a = str(x["HSSPLY_ADRES"])
             if a.find('(') != -1:
                 re = a.find('(')
@@ -139,6 +160,12 @@ def SearchLibrary(): # "검색" 버튼 -> "도서관"
                 continue
             houseNameListT.append(a)
             houseNameList[a] = x["HOUSE_NM"]
+            houseStartApply = x["RCEPT_BGNDE"]
+            houseEndApply = x["RCEPT_ENDDE"]
+            housePrizeDate = x["PRZWNER_PRESNATN_DE"]
+            houseEngineerCompany = x["CNSTRCT_ENTRPS_NM"]
+            contactStartDate = x["CNTRCT_CNCLS_BGNDE"]
+            contactEndDate = x["CNTRCT_CNCLS_ENDDE"]
             listBox.insert(i-1, a)
             i = i+1
 
