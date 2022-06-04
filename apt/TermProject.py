@@ -145,7 +145,7 @@ def SearchLibrary(): # "검색" 버튼 -> "도서관"
     houseEngineerCompany.clear()
     contactStartDate.clear()
     contactEndDate.clear()
-    
+
     res = subscriptionInfoAPI.getsellAptInfo(InputLabel.get())
     if res['data'] != None:
         houseNameListT = []
@@ -160,12 +160,12 @@ def SearchLibrary(): # "검색" 버튼 -> "도서관"
                 continue
             houseNameListT.append(a)
             houseNameList[a] = x["HOUSE_NM"]
-            houseStartApply = x["RCEPT_BGNDE"]
-            houseEndApply = x["RCEPT_ENDDE"]
-            housePrizeDate = x["PRZWNER_PRESNATN_DE"]
-            houseEngineerCompany = x["CNSTRCT_ENTRPS_NM"]
-            contactStartDate = x["CNTRCT_CNCLS_BGNDE"]
-            contactEndDate = x["CNTRCT_CNCLS_ENDDE"]
+            houseStartApply[a] = x["RCEPT_BGNDE"]
+            houseEndApply[a] = x["RCEPT_ENDDE"]
+            housePrizeDate[a] = x["PRZWNER_PRESNATN_DE"]
+            houseEngineerCompany[a] = x["CNSTRCT_ENTRPS_NM"]
+            contactStartDate[a] = x["CNTRCT_CNCLS_BGNDE"]
+            contactEndDate[a] = x["CNTRCT_CNCLS_ENDDE"]
             listBox.insert(i-1, a)
             i = i+1
 
