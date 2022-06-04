@@ -104,13 +104,26 @@ def fullHouse(playerDice):
                 return True
     return False
 
-def smallStraight():
-    pass
+def smallStraight(playerDice):
+    localDice = playerDice
+    if 1 in localDice:
+        pass
+    elif 2 in localDice:
+        pass
+    elif 3 in localDice:
+        pass
 
-def largeStraight():
-    pass
+def largeStraight(playerDice):
+    localDice = playerDice
+    if 1 in localDice:
+        pass
+    elif 2 in localDice:
+        pass
 
-def yahtzee():
-    pass
+def yahtzee(playerDice):
+    for i in range(1, 6):
+        if playerDice[0] != playerDice[i]:
+            return False
+    return True
 
 main()
