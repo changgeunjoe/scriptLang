@@ -113,21 +113,20 @@ def smallStraight(playerDice):
     if len(localList) < 4:
         return False
     localList.sort()
-    for x in range(4):
-        if localList[x] != localList[x + 1] + 1:
-            break
-    
-    for x in range(4):
-        if localList[x] != localList[x + 1] + 1:
-            break
+    if localList[0] +3 == localList[1] + 2== localList [2] + 1 == localList[3]:
+        return True
+    return False
     
 
 def largeStraight(playerDice):
-    localDice = playerDice
-    if 1 in localDice:
-        pass
-    if 2 in localDice:
-        pass
+    localList = []
+    for x in playerDice:        
+            localList.append(x)    
+    localList.sort()
+    if localList[0] +3 == localList[1] + 2== localList [2] + 1 == localList[3] == localList[4] - 1:
+        return True
+    return False
+
 
 def yahtzee(playerDice):
     for i in range(1, 6):
