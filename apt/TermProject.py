@@ -134,8 +134,7 @@ def SearchLibrary(): # "검색" 버튼 -> "도서관"
                 re = a.find('(')
                 temp = a[:re - 1]
                 a = temp
-                print(a)                
-            
+                print(a)
             if a in houseNameListT:
                 continue
             houseNameListT.append(a)
@@ -155,6 +154,7 @@ def mapClicked():
     if not marker_1:
         mapwidget.destroy()
         mapRoot.destroy()
+        #지도를 표시할 수 없습니다 표기gui
         return
     marker_1.set_text(textForMap)
     mapwidget.set_zoom(15)
@@ -162,19 +162,18 @@ def mapClicked():
 
 #이메일 버튼 클릭시 불리는 콜백 함수
 def emailWindow():
-    global g_Tk
-    #mailView = Toplevel()
+    global g_Tk    
     toplevel=Toplevel(g_Tk)
     frameTitle = Frame(toplevel, padx=10, pady=10, bg='#ff0000')
     frameTitle.pack(side="top", fill="x")
     fontNormal = font.Font(toplevel, size=15, weight='bold')
     global InputEmail 
-    toplevel.geometry("320x200+820+100")
+    toplevel.geometry("600x200+820+100")
     InputEmail = Entry(frameTitle, font = fontNormal, \
-    width = 10, borderwidth = 12, relief = 'ridge')
+    width = 30, borderwidth = 12, relief = 'ridge')
     InputEmail.pack(side="left", padx=10, expand=True)
     SearchButton = Button(frameTitle, font = fontNormal, \
-    text="검색", command=onEmail)
+    text="발송", command=onEmail)
     SearchButton.pack(side="right", padx=10, expand=True, fill='y')
      
     
