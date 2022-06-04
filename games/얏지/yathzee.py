@@ -1,3 +1,4 @@
+from threading import local
 from tkinter import *
 from tkinter import font
 currentcolor = 'red'
@@ -105,19 +106,27 @@ def fullHouse(playerDice):
     return False
 
 def smallStraight(playerDice):
-    localDice = playerDice
-    if 1 in localDice:
-        pass
-    elif 2 in localDice:
-        pass
-    elif 3 in localDice:
-        pass
+    localList = []
+    for x in playerDice:
+        if x not in localList:
+            localList.append(x)
+    if len(localList) < 4:
+        return False
+    localList.sort()
+    for x in range(4):
+        if localList[x] != localList[x + 1] + 1:
+            break
+    
+    for x in range(4):
+        if localList[x] != localList[x + 1] + 1:
+            break
+    
 
 def largeStraight(playerDice):
     localDice = playerDice
     if 1 in localDice:
         pass
-    elif 2 in localDice:
+    if 2 in localDice:
         pass
 
 def yahtzee(playerDice):
