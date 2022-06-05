@@ -1,9 +1,83 @@
+from sre_parse import State
 from tkinter import *
 from tkinter import font
+import random
 from player import *
 from dice import *
 from configuration import *
 from tkinter import messagebox
+
+winner = 4
+gameturn = 1
+dice=[0,0,0,0,0]
+def numScore(inputN, playerDice):#uppersection 1~6
+    res = 0
+    for i in range(6):
+        if inputN == playerDice[i]:
+            res += 1
+    return (inputN, res)
+
+def threeOfKind(playerDice):
+    for i in range(6):
+        equalCnt = 0    
+        for j in range(i + 1, 6 - i):
+            if playerDice[i] == playerDice[j]:
+                equalCnt += 1
+        if equalCnt >= 3:
+            return True
+    return False
+
+def fourOfKind(playerDice):
+    for i in range(6):
+        equalCnt = 0    
+        for j in range(i + 1, 6 - i):
+            if playerDice[i] == playerDice[j]:
+                equalCnt += 1
+        if equalCnt >= 4:
+            return True
+    return False
+
+def fullHouse(playerDice):
+    localDice = playerDice
+    list(localDice).sort()
+    for i in range(0, 5):
+        if i != i+1 and i == 2:
+            if localDice[3] == localDice[4]:
+                return True
+        elif i != i+1 and i == 1:
+            if localDice[2] == localDice[3] and localDice[3] == localDice[4]:
+                return True
+    return False
+
+def smallStraight(playerDice):
+    localList = []
+    for x in playerDice:
+        if x not in localList:
+            localList.append(x)
+    if len(localList) < 4:
+        return False
+    localList.sort()
+    if localList[0] +3 == localList[1] + 2== localList [2] + 1 == localList[3]:
+        return True
+    return False
+    
+
+def largeStraight(playerDice):
+    localList = []
+    for x in playerDice:        
+            localList.append(x)    
+    localList.sort()
+    if localList[0] +3 == localList[1] + 2== localList [2] + 1 == localList[3] == localList[4] - 1:
+        return True
+    return False
+
+
+def yahtzee(playerDice):
+    for i in range(1, 6):
+        if playerDice[0] != playerDice[i]:
+            return False
+    return True
+
 
 class YahtzeeBoard:
     # index들.
@@ -103,10 +177,17 @@ class YahtzeeBoard:
     def rollDiceListener(self):
         # 'state' 값이 'disabled'가 아닌 모든 주사위 값을 새로 할당하고 화면에 표시.
         # TODO: 구현
-
+        global dice
         # self.roll 이 0, 1 일 때 : 
         if (self.roll == 0 or self.roll ==1):
             self.roll += 1
+            for i in range(5):  #dice 버튼 5개 생성
+                if self.diceButtons[i]['state'] !='disabled':
+                    dice[i]=random.randint(1, 6)
+	        #각각의 dice 버튼에 대한 이벤트 처리 diceListener 연결
+            #람다 함수를 이용하여 diceListener 매개변수 설정하면 하나의 Listener로 해결
+                self.diceButtons[i].configure (text=str(dice[i]))
+
             self.rollDice.configure(text="Roll Again")
             self.bottomLabel.configure(text="보관할 주사위 선택 후 Roll Again")
         elif (self.roll==2):
