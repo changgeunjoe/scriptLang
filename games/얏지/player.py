@@ -37,3 +37,9 @@ class Player:
                 return False
             i = i + 1
         return True
+    def getUsed(self):# use리스트를 가져오는함수
+        return self.used
+
+    def getTotalScore(self):
+        if self.allLowerUsed() and self.allUpperUsed():
+            return self.getUpperScore()+self.getLowerScore()
