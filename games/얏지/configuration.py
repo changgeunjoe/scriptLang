@@ -24,7 +24,7 @@ class Configuration:
     # 않아야 하는 버튼 (즉, UpperScore, UpperBonus, LowerScore, Total 등)을 나타내는 경우
     # -1을 반환합니다.
         if (row>=0 and row<=6):
-            return Configuration.scoreUpper(d,row+1)
+            return Configuration.numScore(row+1, d)
         elif row==8:
             return Configuration.scoreThreeOfAKind(d)
         elif row==9:
@@ -38,7 +38,7 @@ class Configuration:
         elif row==13:
             return Configuration.scoreYahtzee(d)
         elif row==14:
-            return Configuration.sumDie(d)
+            return Configuration.sumDice(d)
         else:
             return -1
 
@@ -51,19 +51,18 @@ class Configuration:
         else:
             return 0
 
-    def sumDie(d):
+    def sumDice(d):
         s=0
         for i in range(5):
            s+=d[i].getRoll()
         return s
-    def scoreUpper(d, num):  # 정적 메소드: 객체생성 없이 사용 가능
-        # Upper Section 구성 (Ones, Twos, Threes, ...)에 대해 주사위 점수를 매 깁니다. 예를 들어,
-        # num이 1이면 "Ones"구성의 주사위 점수를 반환합니다.
-        s=0
-        for i in range(5):
-            if d[i].getRoll()==num:
-                s+=num
-        return s
+
+    def numScore(inputN, playerDice):#uppersection 1~6
+        res = 0
+        for i in range(6):
+            if inputN == playerDice[i]:
+                res += inputN
+        return res
 
     def scoreThreeOfAKind(d):
         s=0
@@ -167,7 +166,7 @@ class Configuration:
         for i in range(5):
             if lst[i]==i+2:
                 count2+=1
-        if count1==5 or count2:
+        if count1==5 or count2 == 5:
             return 40
         else:
             return 0
