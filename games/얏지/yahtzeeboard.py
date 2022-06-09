@@ -1,3 +1,4 @@
+from cgitb import text
 from tkinter import *
 from tkinter import font
 import tkinter.messagebox
@@ -5,6 +6,14 @@ from player import *
 from dice import *
 from configuration import *
 
+def emailWindow():
+    g_Tk  = Tk()
+    toplevel=Toplevel(g_Tk)
+    
+    fontNormal = font.Font(toplevel, size=15, weight='bold')
+    toplevel.geometry("600x200+820+100")
+    SearchButton = Button(g_Tk, font = fontNormal, width= 8,\
+    text="확인", command=g_Tk.destroy())
 class YahtzeeBoard:
     upperTotal = 6
     upperBonus = 7  
@@ -31,7 +40,7 @@ class YahtzeeBoard:
         self.label.append(Label(self.pwindow, text="플레이어 수", font=self.TempFont))
         self.label[0].grid(row=0, column=0)
         for i in range(1, 11):
-            self.label.append( Label(self.pwindow, text='플레이어 수', font=self.TempFont ) )            
+            self.label.append( Label(self.pwindow, text='플레이어 '+str(i), font=self.TempFont ) )            
             self.label[i].grid(row=i, column=0)
         for i in range(11):
             self.entry.append(Entry(self.pwindow, font=self.TempFont))
@@ -55,6 +64,7 @@ class YahtzeeBoard:
             self.dice.append(Dice())
         self.rollDice = Button(self.window, text='RollDice', font = self.TempFont,
                       command = self.rollDiceListener)
+                      
         self.rollDice.grid(row=0, column=0)
         for i in range(5): 
             self.diceButtons.append(Button(self.window, text='?',font = self.TempFont, width=8, command = lambda row=i: self.diceListener(row)))
@@ -83,6 +93,7 @@ class YahtzeeBoard:
 
     def rollDiceListener(self): 
         for i in range(5):
+            self.winnertag=Label(self.window, text="                                   ", font=self.TempFont).grid(row=10,column=0)
             if (self.diceButtons[i]['state'] != 'disabled'):
                 self.dice[i].rollDie()
                 self.diceButtons[i].configure(text=str(self.dice[i].getRoll()))
@@ -156,28 +167,66 @@ class YahtzeeBoard:
             if len(resurtList)==1:
                a="승자는: "+resurtList[0]+" 입니다."
                self.winnertag=Label(self.window, text=a, font=self.TempFont).grid(row=10,column=0)
+
+
+             
             else:
                 resultstr=""
                 for x in resurtList:
                     resultstr+=resultstr+x+","
                 resultstr+="가 비겼습니다."
                 self.winnertag = Label(self.window, text=resultstr, font=self.TempFont).grid(row=10,column=0)
+            self.round=0
+            self.player=0
 
-           
-            pass
+
+            for i in range(5):
+                self.diceButtons[i].configure(text='?')
+                self.diceButtons[i]['state']='normal'
+                self.diceButtons[i]['bg']='SystemButtonFace'
+
+            for i in range(self.total + 1):
+                for j in range(self.numPlayers):
+                    self.fields[i][j].configure(text='')
+                    if j==self.player:
+                        self.fields[i][j]['state']='normal'
+                        self.fields[i][j]['bg']='SystemButtonFace'
+                    if i==6 or i==7 or i==15 or i==16:
+                        self.fields[i][j]['state']='disabled'
+                        self.fields[i][j]['bg']='light gray'
+            for player in self.players:
+                player.scores=[0 for i in range(15)]
+                player.used=[False for i in range(15)]
+        
+        self.rollDice.configure(text="Roll Dice")
+        self.rollDice['state']='normal'
+        self.rollDice['bg']='SystemButtonFace'
+
+     
+
+        # self.roll=0
+        # self.dice=[]
+        # for i in range(5):  
+        #     self.dice.append(Dice())
+        # self.rollDice .configure(text='RollDice')
+        # self.rollDice['state'] = 'normal'
+        # self.rollDice['bg'] = 'SystemButtonFace'
+        # for i in range(5):  
+        #     self.diceButtons[i].configure(text="?")
+        #     self.diceButtons[i]['state'] = 'normal'
+        #     self.diceButtons[i]['bg'] = 'SystemButtonFace'
+        # self.bottomLabel.configure(text=self.players[self.player].toString() +
+        #                            "차례: Roll Dice 버튼을 누르세요")
 
         self.roll=0
-        self.dice=[]
-        for i in range(5):  
-            self.dice.append(Dice())
-        self.rollDice .configure(text='RollDice')
-        self.rollDice['state'] = 'normal'
-        self.rollDice['bg'] = 'SystemButtonFace'
-        for i in range(5):  
-            self.diceButtons[i].configure(text="?")
-            self.diceButtons[i]['state'] = 'normal'
-            self.diceButtons[i]['bg'] = 'SystemButtonFace'
-        self.bottomLabel.configure(text=self.players[self.player].toString() +
-                                   "차례: Roll Dice 버튼을 누르세요")
+        for i in range(5):
+            self.diceButtons[i].configure(text='?')
+            self.diceButtons[i]['state']='normal'
+            self.diceButtons[i]['bg']='SystemButtonFace'
+        
+        for dice in self.dice:
+            dice.roll=0
+        
+        self.bottomLabel.configure(text=self.players[self.player].toString()+"차례: Roll Dice 버튼을 누르세요")
         print(self.round)
 YahtzeeBoard()
