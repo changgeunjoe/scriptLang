@@ -59,7 +59,7 @@ class Configuration:
 
     def numScore(inputN, playerDice):#uppersection 1~6
         res = 0
-        for i in range(6):
+        for i in range(5):
             if inputN == playerDice[i]:
                 res += inputN
         return res
