@@ -10,7 +10,37 @@ from tkinter import messagebox
 winner = 4
 gameturn = 1
 dice=[0,0,0,0,0]
-
+def emailWindow():
+    global g_Tk    
+    toplevel=Toplevel(g_Tk)
+    frameTitle = Frame(toplevel, padx=10, pady=10, bg='#ff0000')
+    frameTitle.pack(side="top", fill="x")
+    fontNormal = font.Font(toplevel, size=15, weight='bold')
+    global InputEmail 
+    toplevel.geometry("600x200+820+100")
+    InputEmail = Entry(frameTitle, font = fontNormal, \
+    width = 30, borderwidth = 12, relief = 'ridge')
+    InputEmail.pack(side="left", padx=10, expand=True)
+    SearchButton = Button(frameTitle, font = fontNormal, \
+    text="확인", command=resetgame)
+    SearchButton.pack(side="right", padx=10, expand=True, fill='y')
+def resetgame():
+    global dice 
+    dice=[]    
+    global diceButtons 
+    diceButtons = []  
+    global fields    
+    fields=[] 
+    global players
+    players = []  
+    global numPlayers 
+    numPlayers = 0  
+    global player 
+    player = 0       
+    global round 
+    round = 0      
+    global roll 
+    roll = 0        
 class YahtzeeBoard:
     # index들.
     UPPERTOTAL = 6  # "Upper Scores" 위치의 index.
@@ -229,6 +259,7 @@ class YahtzeeBoard:
                     a=i
 
             self.bottomLabel.configure(text=self.players[a].toString() +"의 승리 게임끝")
+            #emailWindow()
             return
       
 

@@ -3,8 +3,9 @@ from encodings import utf_8
 from http.client import HTTPSConnection
 import regionCode
 import json
-import urllib
 import requests
+import urllib
+
 
 
 competitionApiAddress = 'https://infuser.odcloud.kr/api/stages/36148/api-docs?1644395106638'
