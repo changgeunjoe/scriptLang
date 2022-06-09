@@ -1,267 +1,183 @@
-from sre_parse import State
 from tkinter import *
 from tkinter import font
-import random
+import tkinter.messagebox
 from player import *
 from dice import *
 from configuration import *
-from tkinter import messagebox
 
-winner = 4
-gameturn = 1
-dice=[0,0,0,0,0]
-def emailWindow():
-    global g_Tk    
-    toplevel=Toplevel(g_Tk)
-    frameTitle = Frame(toplevel, padx=10, pady=10, bg='#ff0000')
-    frameTitle.pack(side="top", fill="x")
-    fontNormal = font.Font(toplevel, size=15, weight='bold')
-    global InputEmail 
-    toplevel.geometry("600x200+820+100")
-    InputEmail = Entry(frameTitle, font = fontNormal, \
-    width = 30, borderwidth = 12, relief = 'ridge')
-    InputEmail.pack(side="left", padx=10, expand=True)
-    SearchButton = Button(frameTitle, font = fontNormal, \
-    text="확인", command=resetgame)
-    SearchButton.pack(side="right", padx=10, expand=True, fill='y')
-def resetgame():
-    global dice 
-    dice=[]    
-    global diceButtons 
-    diceButtons = []  
-    global fields    
-    fields=[] 
-    global players
-    players = []  
-    global numPlayers 
-    numPlayers = 0  
-    global player 
-    player = 0       
-    global round 
-    round = 0      
-    global roll 
-    roll = 0        
 class YahtzeeBoard:
-    # index들.
-    UPPERTOTAL = 6  # "Upper Scores" 위치의 index.
-    UPPERBONUS = 7  # "Upper Bonus(35)" 위치의 index.
-    LOWERTOTAL = 15  # "Lower Scores" 위치의 index.
-    TOTAL = 16  # "Total" 위치의 index.
-
-    # 객체 리스트
-    dice = []       # Dice() 객체의 리스트.
-    diceButtons = [] # 각 주사위를 표현하는 Button 객체의 리스트.
-    fields = []     # 각 플레이어별 점수판(카테고리). Button 객체의 2차원 리스트.
-                    # 열: 플레이어 (0열=플레이어1, 1열=플레이어2,…)
-                    # 17행: upper카테고리6행, upperScore, upperBonus, lower카테고리7행, LowerScore, Total
-    players = []    # 플레이어 수 만큼의 Player 인스턴스를 가짐.
-    numPlayers = 0  # # 플레이어 수
-    player = 0      # players 리스트에서 현재 플레이어의 index.
-    round = 0       # 13 라운드 중 몇번째인지 (0~12 사이의 값을 가짐)
-    roll = 0        # 각 라운드에서 3번 중 몇번째 굴리기인지 (0~2 사이의 값을 가짐)
-    # 색깔
-    color_btn_bg = 'SystemButtonFace'
+    upperTotal = 6
+    upperBonus = 7  
+    lowerTotal = 15 
+    total = 16 
+    dice = []  
+    diceButtons = []  
+    fields = []  
+    players = [] 
+    numPlayers = 0
+    player = 0  
+    round = 0  
+    roll = 0 
 
     def __init__(self):
-        self.InitGame()
+        self.InitPlayers()
 
-    def InitGame(self):     #player window 생성하고 최대 10명까지 플레이어 설정
+    def InitPlayers(self):
         self.pwindow = Tk()
-        self.TempFont = font.Font(size=12, weight='bold', family='Consolas')
+
+        self.TempFont = font.Font(size=16, weight='bold', family='Consolas')
         self.label = []
         self.entry = []
-        self.label.append( Label(self.pwindow, text='플레이어 수', font=self.TempFont ) )
+        self.label.append(Label(self.pwindow, text="플레이어 수", font=self.TempFont))
         self.label[0].grid(row=0, column=0)
-
-        for i in range(1,11):
-            self.label.append( Label(self.pwindow, text='플레이어'+str(i)+' 이름', font=self.TempFont))
+        for i in range(1, 11):
+            self.label.append( Label(self.pwindow, text='플레이어 수', font=self.TempFont ) )            
             self.label[i].grid(row=i, column=0)
         for i in range(11):
             self.entry.append(Entry(self.pwindow, font=self.TempFont))
             self.entry[i].grid(row=i, column=1)
-        Button(self.pwindow, text='Yahtzee 플레이어 설정 완료', font=self.TempFont, command=self.InitAllPlayers).grid(row=11, column=0)
-
+        Button(self.pwindow, text="Yahtzee 플레이어 설정 완료", font=self.TempFont, command=self.playerNames).grid(row=11, column=0)
         self.pwindow.mainloop()
 
-    def InitAllPlayers(self):
-        '''
-        [플레이어 설정 완료 버튼 누르면 실행되는 함수]
-        numPlayers를 결정하고 이 숫자에 따라 각 player에게 필요한 정보들을 초기화.
-        기존 toplebel 윈도우를 닫고 Yahtzee 보드 윈도우 생성.
-        '''
+    def playerNames(self):
         self.numPlayers = int(self.entry[0].get())
-        for i in range(1, self.numPlayers+1):
+
+        for i in range(1, self.numPlayers + 1):
             self.players.append(Player(str(self.entry[i].get())))
         self.pwindow.destroy()
+        self.initInterface()  
 
-        ##################################################       
-        # Yahtzee 보드판: 플레이어 수 만큼 생성
-        
-        self.window = Tk('Yahtzee Game')
-        self.TempFont = font.Font(size=12, weight='bold', family='Consolas')
-
-        for i in range(5): #Dice 객체 5개 생성
+    def initInterface(self): 
+        self.window = Tk("YahtzeeGame")
+        self.window.geometry("1600x800")
+        self.TempFont = font.Font(size=16, weight='bold', family ='Consolas')
+        for i in range(5):
             self.dice.append(Dice())
-
-        self.rollDice = Button(self.window, text='Roll Dice', font=self.TempFont, command=self.rollDiceListener, bg=self.color_btn_bg)  # Roll Dice 버튼
+        self.rollDice = Button(self.window, text='RollDice', font = self.TempFont,
+                      command = self.rollDiceListener)
         self.rollDice.grid(row=0, column=0)
-        for i in range(5):  #dice 버튼 5개 생성
-	        #각각의 dice 버튼에 대한 이벤트 처리 diceListener 연결
-            #람다 함수를 이용하여 diceListener 매개변수 설정하면 하나의 Listener로 해결
-            self.diceButtons.append(Button(self.window, text='?', font=self.TempFont, width=8, bg=self.color_btn_bg, command=lambda row=i: self.diceListener(row))) 
+        for i in range(5): 
+            self.diceButtons.append(Button(self.window, text='?',font = self.TempFont, width=8, command = lambda row=i: self.diceListener(row)))
             self.diceButtons[i].grid(row=i + 1, column=0)
-        
-        for i in range(self.TOTAL + 2):  # i행 : 점수
+
+
+
+        for i in range(self.total + 2):
             Label(self.window, text=Configuration.configs[i], font=self.TempFont).grid(row=i, column=1)
-            for j in range(self.numPlayers):  # j열 : 플레이어
-                if (i == 0):  # 플레이어 이름 표시
+            for j in range(self.numPlayers):  
+                if (i == 0):  
                     Label(self.window, text=self.players[j].toString(), font=self.TempFont).grid(row=i, column=2 + j)
                 else:
-                    if (j==0): #각 행마다 한번씩 리스트 추가, 다중 플레이어 지원
+                    if (j == 0):  
                         self.fields.append(list())
-                    #i-1행에 플레이어 개수 만큼 버튼 추가하고 이벤트 Listener 설정, 매개변수 설정
-                    self.fields[i-1].append(Button(self.window, text="", font=self.TempFont, width=8,
-                        command=lambda row=i-1: self.categoryListener(row)))
-                    self.fields[i-1][j].grid(row=i,column=2 + j)
-                    # 누를 필요없는 버튼은 disable 시킴
-                    if (j != self.player or (i-1) == self.UPPERTOTAL or (i-1) == self.UPPERBONUS 
-                        or (i-1) == self.LOWERTOTAL or (i-1) == self.TOTAL):
-                        self.fields[i-1][j]['state'] = 'disabled'
-                        self.fields[i-1][j]['bg'] = 'light gray'
-        
-        #상태 메시지 출력
-        self.bottomLabel=Label(self.window, text=self.players[self.player].toString()+
-            "차례: Roll Dice 버튼을 누르세요", width=35, font=self.TempFont)
-        self.bottomLabel.grid(row=self.TOTAL + 2, column=0, columnspan=2)
+                    self.fields[i - 1].append(Button(self.window, text="", font=self.TempFont, width=8, command=lambda row=i - 1: self.categoryListener(row)))
+                    self.fields[i - 1][j].grid(row=i, column=2 + j)
+                    if (j != self.player or (i - 1) == self.upperTotal or (i - 1) == self.upperBonus
+                        or (i - 1) == self.lowerTotal or (i - 1) == self.total):
+                        self.fields[i - 1][j]['state'] = 'disabled'
+                        self.fields[i - 1][j]['bg'] = 'light gray'
+        self.bottomLabel = Label(self.window, text=self.players[self.player].toString() +
+                                               "차례: Roll Dice 버튼을 누르세요", width=35, font=self.TempFont)
+        self.bottomLabel.grid(row=self.total + 2, column=0)
         self.window.mainloop()
 
-    # 주사위 굴리기 함수.
-    def rollDiceListener(self):
-        # 'state' 값이 'disabled'가 아닌 모든 주사위 값을 새로 할당하고 화면에 표시.
-        # TODO: 구현
-        for i in range(5):  #dice 버튼 5개 생성
+    def rollDiceListener(self): 
+        for i in range(5):
             if (self.diceButtons[i]['state'] != 'disabled'):
                 self.dice[i].rollDie()
                 self.diceButtons[i].configure(text=str(self.dice[i].getRoll()))
-        # self.roll 이 0, 1 일 때 : 
-        if (self.roll == 0 or self.roll ==1):
+            else:
+                self.diceButtons[i]['state'] = 'normal'
+                self.diceButtons[i]['bg'] = 'SystemButtonFace'
+        if (self.roll == 0 or self.roll == 1):
             self.roll += 1
-           
-	        #각각의 dice 버튼에 대한 이벤트 처리 diceListener 연결
-            #람다 함수를 이용하여 diceListener 매개변수 설정하면 하나의 Listener로 해결
-
             self.rollDice.configure(text="Roll Again")
             self.bottomLabel.configure(text="보관할 주사위 선택 후 Roll Again")
-        elif (self.roll==2):
+        elif (self.roll == 2):
             self.bottomLabel.configure(text="카테고리를 선택하세요")
             self.rollDice['state'] = 'disabled'
             self.rollDice['bg'] = 'light gray'
-            self.roll = 0
-    def lowerUsed(self):
-        for i in range(8,15):
-            if self.fields[i][self.player]['text']=='':
-                return False
-        return True
-    def totalScore(self,p):
-        s=0
-        for i in range(16):
-            if self.fields[i][p]['text']!='':
-                print(self.fields[i][p]['text'])
-                s+=int(self.fields[i][p]['text'])
-        return s
-    # 각 주사위에 해당되는 버튼 클릭 : disable 시키고 배경색을 어둡게 바꿔 표현해 주기.
-    def diceListener(self, row):
-        if self.diceButtons[row]['state']=='disabled':
-            self.diceButtons[row]['state'] = 'active'
-            self.diceButtons[row]['bg'] = 'white'
-        if self.diceButtons[row]['text']!='?':
-            self.diceButtons[row]['state'] = 'disabled'
-            self.diceButtons[row]['bg'] = 'light gray'
 
-    # 카레고리 버튼 눌렀을 때의 처리.
-    #   row: 0~5, 8~14
-    def categoryListener(self, row):
-        score = Configuration.score(row, self.dice)      #점수 계산
-        # index : 0~12
+    def diceListener(self, row):  
+        if self.roll!=0 :
+            if self.diceButtons[row]['state']!='disabled':
+                self.diceButtons[row]['state'] = 'disabled'
+                self.diceButtons[row]['bg'] = 'light gray'
+
+    def categoryListener(self, row):  
+        score = Configuration.score(row, self.dice)  
+
+
         index = row
-        if (row>7):
-            index = row-2
-        cur_player = self.players[self.player]
-
-        # (1) cur_player에 setScore(), setAtUsed() 호출하여 점수와 사용상태 반영.
-        # (2) 선택한 카테고리의 점수를 버튼에 적고 
-        # (3) 버튼을 disable 시킴.
+        if (row > 7):
+            index = row - 2
         self.players[self.player].setScore(score, index)
         self.players[self.player].setAtUsed(index)
         self.fields[row][self.player].configure(text=str(score))
         self.fields[row][self.player]['state'] = 'disabled'
         self.fields[row][self.player]['bg'] = 'light gray'
-        # TODO: 구현
-        
-        # UPPER category가 전부 사용되었으면(cur_player.allUpperUsed()로써 확인)
-        # -> cur_player.getUpperScore() 점수에 따라
-        #    UI의 UPPERTOTAL, UPPERBONUS 에 내용 채우기.
         if (self.players[self.player].allUpperUsed()):
-            self.fields[self.UPPERTOTAL][self.player].configure(text=str(self.players[self.player].getUpperScore()))
+            self.fields[self.upperTotal][self.player].configure(text=
+                                                            str(self.players[self.player].getUpperScore()))
             if (self.players[self.player].getUpperScore() > 63):
-                self.fields[self.UPPERBONUS][self.player].configure(text="35")  # UPPERBONUS=7
-                self.players[self.player].setScore(score,self.UPPERBONUS)
-                self.players[self.player].setAtUsed(self.UPPERBONUS)
+                self.fields[self.upperBonus][self.player].configure(text="35")  
             else:
-                self.fields[self.UPPERBONUS][self.player].configure(text="0")  # UPPERBONUS=7
-        # TODO: 구현
+                self.fields[self.upperBonus][self.player].configure(text="0")  
 
-
-        # LOWER category 전부 사용되었으면(cur_player.allLowerUsed()로써 확인) 
-        # -> cur_player.getLowerScore() 점수에 따라
-        #   UI의 LOWERTOTAL 에 내용 채우기.
-        if self.lowerUsed():
-            self.fields[15][self.player].configure(text=str(self.players[self.player].getLowerScore()))
-        # UPPER category와 LOWER category가 전부 사용되었으면 TOTAL 계산
-        if (self.players[self.player].allUpperUsed() and self.lowerUsed()):
-            self.fields[16][self.player].configure(text=str(self.players[self.player].getTotalScore()))
-        # TODO: 구현
-            
-        xplayer=self.player
+        if (self.players[self.player].allLowerUsed()):
+            self.fields[self.lowerTotal][self.player].configure(text=str(self.players[self.player].getLowerScore()))
+        if (self.players[self.player].allUpperUsed() and self.players[self.player].allLowerUsed()):
+            self.fields[self.total][self.player].configure(text=str(self.players[self.player].getTotalScore()))
         self.player = (self.player + 1) % self.numPlayers
-        for i in range(self.TOTAL + 2):
+
+        for i in range(self.total + 1):
             for j in range(self.numPlayers):
-                if (j != self.player or (i - 1) == self.UPPERTOTAL or (i - 1) == self.UPPERBONUS or (i - 1) == self.LOWERTOTAL or (i - 1) == self.TOTAL):
-                    self.fields[i-1][j]['state'] = 'disabled'
-                    self.fields[i-1][j]['bg'] = 'light gray'
-                elif(j==self.player):
-                    if self.fields[i - 1][j]['text'] == '':
-                        self.fields[i-1][j]['state'] = 'active'
-                        self.fields[i-1][j]['bg'] = 'white'
+                self.fields[i][j]['state'] = 'disabled'
+                self.fields[i][j]['bg'] = 'light gray'
 
-        self.rollDice['state']='active'
-        self.rollDice['bg']='white'
-        self.rollDice['text']='Roll Dice'
-        for i in range(5):
-            self.diceButtons[i]['state']='active'
-            self.diceButtons[i]['bg'] = 'white'
-            self.diceButtons[i]['text'] = '?'
+                if (j != self.player or (i) == self.upperTotal or (i) == self.upperBonus
+                        or (i) == self.lowerTotal or (i)  == self.total):
+                        self.fields[i][j]['state'] = 'disabled'
+                        self.fields[i][j]['bg'] = 'light gray'
+                elif  self.fields[i][self.player]['text']:
+                    self.fields[i][self.player]['state'] = 'disabled'
+                    self.fields[i][self.player]['bg'] = 'light gray'
+                else:
+                    self.fields[i][self.player]['state'] = 'normal'
+                    self.fields[i][self.player]['bg'] = 'SystemButtonFace'
+        if(self.player==0):
+            self.round+=1
+        if(self.round==13):
+            d={}
+            for x in self.players:
+                d[x.toString()]=x.getTotalScore()
+            val=max(d.values())
+            resurtList=list(key for key,value in d.items() if value ==val)
+            if len(resurtList)==1:
+               a="승자는: "+resurtList[0]+" 입니다."
+               self.winnertag=Label(self.window, text=a, font=self.TempFont).grid(row=10,column=0)
+            else:
+                resultstr=""
+                for x in resurtList:
+                    resultstr+=resultstr+x+","
+                resultstr+="가 비겼습니다."
+                self.winnertag = Label(self.window, text=resultstr, font=self.TempFont).grid(row=10,column=0)
+
+           
+            pass
+
         self.roll=0
-
+        self.dice=[]
+        for i in range(5):  
+            self.dice.append(Dice())
+        self.rollDice .configure(text='RollDice')
+        self.rollDice['state'] = 'normal'
+        self.rollDice['bg'] = 'SystemButtonFace'
+        for i in range(5):  
+            self.diceButtons[i].configure(text="?")
+            self.diceButtons[i]['state'] = 'normal'
+            self.diceButtons[i]['bg'] = 'SystemButtonFace'
         self.bottomLabel.configure(text=self.players[self.player].toString() +
-                                                   "차례: Roll Dice 버튼을 누르세요")
-        if (self.player == 0):
-            self.round += 1
-
-        if (self.round == 13):
-            max=0
-            for i in self.players:
-               if max<self.players[i].getTotalScore():
-                    max=self.players[i].getTotalScore()
-            a=0
-            for i in self.players:
-                if max == self.players[i].getTotalScore():
-                    a=i
-
-            self.bottomLabel.configure(text=self.players[a].toString() +"의 승리 게임끝")
-            #emailWindow()
-            return
-      
-
-if __name__ == '__main__':
-    YahtzeeBoard()
+                                   "차례: Roll Dice 버튼을 누르세요")
+        print(self.round)
+YahtzeeBoard()
