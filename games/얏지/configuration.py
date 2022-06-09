@@ -60,7 +60,7 @@ class Configuration:
     def numScore(inputN, playerDice):#uppersection 1~6
         res = 0
         for i in range(5):
-            if inputN == playerDice[i]:
+            if inputN == playerDice[i].roll:
                 res += inputN
         return res
 
