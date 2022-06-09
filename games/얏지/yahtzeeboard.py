@@ -249,6 +249,7 @@ class YahtzeeBoard:
                 self.fields[self.UPPERBONUS][self.player].configure(text="0")  # UPPERBONUS=7
         # TODO: 구현
 
+
         # LOWER category 전부 사용되었으면(cur_player.allLowerUsed()로써 확인) 
         # -> cur_player.getLowerScore() 점수에 따라
         #   UI의 LOWERTOTAL 에 내용 채우기.
