@@ -1,3 +1,4 @@
+from select import select
 from tkinter import *
 from tkinter import font
 from typing import MappingView
@@ -9,6 +10,7 @@ import tkintermapview
 
 textForMap = ''
 addressForMap = ''
+preSearchKeyword = '서울'
 
 houseNameList = dict()
 houseStartApply = dict()#접수
@@ -21,6 +23,8 @@ contactEndDate = dict()#계약 종료일
 
 g_Tk = Tk()
 g_Tk.geometry("400x600+450+100") # {width}x{height}+-{xpos}+-{ypos}
+
+
 def event_for_listbox(event): # 리스트 선택 시 내용 출력
     selection = event.widget.curselection()
     if selection:
@@ -33,6 +37,19 @@ def event_for_listbox(event): # 리스트 선택 시 내용 출력
         textForMap = houseNameList[data]
         print(addressForMap)
         print(textForMap)
+        #얘네 싹 다 검색 창밑에 리스트 박스에 출력할 수 있도록 구현 좀요
+        print("예약 시작일: " + houseStartApply[data])
+        print("예약 종료일: " + houseEndApply[data])
+        print("청약 당첨자 발표일: " + housePrizeDate[data])
+        print("건설업체: " + houseEngineerCompany[data])
+        print("계약 시작일: " + contactStartDate[data])
+        print("계약 종료일: " + contactEndDate[data])
+
+def event_for_searchListbox(event): # 리스트 선택 시 내용 출력
+    global SearchListBox
+    global preSearchKeyword
+    preSearchKeyword = SearchListBox.curselection()[0]
+     
 
 #
 
@@ -63,9 +80,10 @@ def InitScreen():
     LBScrollbar = Scrollbar(frameCombo)
     SearchListBox = Listbox(frameCombo, \
     font=fontNormal, activestyle='none', width=10, height=1, borderwidth=12, relief='ridge', yscrollcommand=LBScrollbar.set) 
-    slist = ["서울", "경기도", "강원도", "부산","동탄"]
+    slist = ["서울", "부산","대전", "대구", "울산", "광주", "인천", "세종", "경기", "강원", "전남", "전북",  "경남", "경북"]
     for i, s in enumerate(slist): SearchListBox.insert(i, s)
     SearchListBox.pack(side='left', padx=10, expand=True)
+    SearchListBox.bind('<<ListboxSelect>>', event_for_searchListbox)
     LBScrollbar.pack(side="left")
     LBScrollbar.config(command=SearchListBox.yview)
     global InputLabel
@@ -73,7 +91,7 @@ def InitScreen():
      width = 10, borderwidth = 12, relief = 'ridge')
     InputLabel.pack(side="left", padx=10, expand=True)
     SearchButton = Button(frameCombo, font = fontNormal, \
-    text="검색", command=onSearch)
+    text="검색", command=SearchHouse)
     SearchButton.pack(side="right", padx=10, expand=True, fill='y')
     # 사용자 입력 부분
     
@@ -109,27 +127,26 @@ def InitScreen():
     MapButton.pack(side="right", padx=10, expand=True, fill='y')
 
 def onSearch(): # "검색" 버튼 이벤트처리
-    global SearchListBox
-    sels = SearchListBox.curselection()
-    iSearchIndex = 0 if len(sels) == 0 else SearchListBox.curselection()[0]
-    if iSearchIndex == 0: 
-        SearchLibrary()
-    elif iSearchIndex == 1:
-        pass 
-    elif iSearchIndex == 2:
-        pass 
-    elif iSearchIndex == 3:
-        global InputLabel
-        print(InputLabel.get())
+    # global SearchListBox
+    # sels = SearchListBox.curselection()
+    # iSearchIndex = 0 if len(sels) == 0 else SearchListBox.curselection()[0]
+    # if iSearchIndex >= 5: 
+    #     pass
+    # else:
+    SearchHouse()        
+    global InputLabel
+    print(InputLabel.get())
         #subscriptionInfoAPI.getsellAptInfo(sels) # 연결 안됨
-        pass # 유틸리티 함수: 문자열 내용 있을 때만 사용
-
+        # 유틸리티 함수: 문자열 내용 있을 때만 사용
+    
 
 
 
 def getStr(s): 
     return '' if not s else s
-def SearchLibrary(): # "검색" 버튼 -> "도서관"
+
+
+def SearchHouse(): # "검색" 버튼 -> "도서관"
     i=1
     global houseNameList
     global houseStartApply
@@ -145,8 +162,10 @@ def SearchLibrary(): # "검색" 버튼 -> "도서관"
     houseEngineerCompany.clear()
     contactStartDate.clear()
     contactEndDate.clear()
-
-    res = subscriptionInfoAPI.getsellAptInfo(InputLabel.get())
+    global preSearchKeyword
+    res = subscriptionInfoAPI.getsellAptInfo(preSearchKeyword)    
+    global listBox
+    listBox.delete(0, listBox.size())
     if res['data'] != None:
         houseNameListT = []
         for x in res['data']:
@@ -158,17 +177,32 @@ def SearchLibrary(): # "검색" 버튼 -> "도서관"
                 print(a)
             if a in houseNameListT:
                 continue
-            houseNameListT.append(a)
-            houseNameList[a] = x["HOUSE_NM"]
-            houseStartApply[a] = x["RCEPT_BGNDE"]
-            houseEndApply[a] = x["RCEPT_ENDDE"]
-            housePrizeDate[a] = x["PRZWNER_PRESNATN_DE"]
-            houseEngineerCompany[a] = x["CNSTRCT_ENTRPS_NM"]
-            contactStartDate[a] = x["CNTRCT_CNCLS_BGNDE"]
-            contactEndDate[a] = x["CNTRCT_CNCLS_ENDDE"]
-            listBox.insert(i-1, a)
-            i = i+1
-
+            global InputLabel
+            if InputLabel.get() != '':                
+                if InputLabel.get() in a:
+                    houseNameListT.append(a)
+                    houseNameList[a] = x["HOUSE_NM"]
+                    houseStartApply[a] = x["RCEPT_BGNDE"]
+                    houseEndApply[a] = x["RCEPT_ENDDE"]
+                    housePrizeDate[a] = x["PRZWNER_PRESNATN_DE"]
+                    houseEngineerCompany[a] = x["CNSTRCT_ENTRPS_NM"]
+                    contactStartDate[a] = x["CNTRCT_CNCLS_BGNDE"]
+                    contactEndDate[a] = x["CNTRCT_CNCLS_ENDDE"]
+                    listBox.insert(i-1, a)
+                    i = i+1
+                    print('2')
+            else:
+                houseNameListT.append(a)
+                houseNameList[a] = x["HOUSE_NM"]
+                houseStartApply[a] = x["RCEPT_BGNDE"]
+                houseEndApply[a] = x["RCEPT_ENDDE"]
+                housePrizeDate[a] = x["PRZWNER_PRESNATN_DE"]
+                houseEngineerCompany[a] = x["CNSTRCT_ENTRPS_NM"]
+                contactStartDate[a] = x["CNTRCT_CNCLS_BGNDE"]
+                contactEndDate[a] = x["CNTRCT_CNCLS_ENDDE"]
+                listBox.insert(i-1, a)
+                i = i+1
+                print('1')
 
 def mapClicked():
     mapRoot = Toplevel()
