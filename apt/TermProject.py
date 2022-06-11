@@ -57,17 +57,17 @@ def InitScreen():
     fontTitle = font.Font(g_Tk, size=18, weight='bold', family = '바탕체')
     fontNormal = font.Font(g_Tk, size=15, weight='bold') 
     # 화면 전체 구도 잡기. 
-    frameTitle = Frame(g_Tk, padx=10, pady=10, bg='#ff0000')
+    frameTitle = Frame(g_Tk, padx=10, pady=10, bg='#4AA8D8')
     frameTitle.pack(side="top", fill="x")
-    frameCombo = Frame(g_Tk, pady=10, bg='#00ff00')
+    frameCombo = Frame(g_Tk, pady=10, bg='#4AA8D8')
     frameCombo.pack(side="top", fill="x")
-    frameEntry = Frame(g_Tk, pady=10, bg='#0000ff')
+    frameEntry = Frame(g_Tk, pady=10, bg='#4AA8D8')
     frameEntry.pack(side="top", fill="x")
-    frameList = Frame(g_Tk, padx=10, pady=10, bg='#ffff00')
+    frameList = Frame(g_Tk, padx=10, pady=10, bg='#4AA8D8')
     frameList.pack(side="top", fill="x")
-    framePicture = Frame(g_Tk, padx=10, pady=10, bg='red')
+    framePicture = Frame(g_Tk, padx=10, pady=10, bg='#4AA8D8')
     framePicture.pack(side="top", fill="x")
-    frameMap = Frame(g_Tk, padx=10, pady=10, bg='red')
+    frameMap = Frame(g_Tk, padx=10, pady=10, bg='#4AA8D8')
     frameMap.pack(side="top", fill="x")
     
 # title 부분
