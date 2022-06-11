@@ -11,7 +11,7 @@ import tkintermapview
 textForMap = ''
 addressForMap = ''
 preSearchKeyword = '서울'
-
+slist = []
 houseNameList = dict()
 houseStartApply = dict()#접수
 houseEndApply = dict()
@@ -48,7 +48,7 @@ def event_for_listbox(event): # 리스트 선택 시 내용 출력
 def event_for_searchListbox(event): # 리스트 선택 시 내용 출력
     global SearchListBox
     global preSearchKeyword
-    preSearchKeyword = SearchListBox.curselection()[0]
+    preSearchKeyword = SearchListBox.curselection()[0]    
      
 
 #
@@ -77,6 +77,7 @@ def InitScreen():
     sendEmailButton.pack(side='right', padx=10, fill='y')
    # sendEmailButton.bind('<Button-1>', emailWindow)
     global SearchListBox 
+    global slist    
     LBScrollbar = Scrollbar(frameCombo)
     SearchListBox = Listbox(frameCombo, \
     font=fontNormal, activestyle='none', width=10, height=1, borderwidth=12, relief='ridge', yscrollcommand=LBScrollbar.set) 
@@ -163,7 +164,8 @@ def SearchHouse(): # "검색" 버튼 -> "도서관"
     contactStartDate.clear()
     contactEndDate.clear()
     global preSearchKeyword
-    res = subscriptionInfoAPI.getsellAptInfo(preSearchKeyword)    
+    global slist
+    res = subscriptionInfoAPI.getsellAptInfo(slist[preSearchKeyword])    
     global listBox
     listBox.delete(0, listBox.size())
     if res['data'] != None:
