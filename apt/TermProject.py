@@ -34,6 +34,16 @@ def event_for_listbox(event): # 리스트 선택 시 내용 출력
     addressForMap = data
     global houseNameList
     textForMap = houseNameList[data]
+
+    global InformationBox
+    InformationBox.delete(0, InformationBox.size())
+    InformationBox.insert(0,addressForMap)
+    InformationBox.insert(1,textForMap)
+    InformationBox.insert(2,"예약 시작일: " + houseStartApply[data])
+    InformationBox.insert(3,"예약 종료일: " + houseEndApply[data])
+    InformationBox.insert(4,"청약 당첨자 발표일: " + housePrizeDate[data])
+    InformationBox.insert(5,"건설업체: " + houseEngineerCompany[data])
+    InformationBox.insert(6,"계약 종료일: " + contactEndDate[data])
     print(addressForMap)
     print(textForMap)
     #얘네 싹 다 검색 창밑에 리스트 박스에 출력할 수 있도록 구현 좀요
@@ -84,7 +94,7 @@ def InitScreen():
     for i, s in enumerate(slist): 
         SearchListBox.insert(i, s)
     SearchListBox.pack(side='left', padx=10, expand=True)
-    SearchListBox.bind('<<ListboxSelect>>', event_for_searchListbox)
+    SearchListBox.bind('<<ListboxSelect>>', event_for_listbox)
     LBScrollbar.pack(side="left")
     LBScrollbar.config(command=SearchListBox.yview)
     global InputLabel
@@ -111,17 +121,19 @@ def InitScreen():
     # listBox2.bind('<<ListboxSelect>>', event_for_listbox)
     # listBox2.pack(side="right", padx=10, expand=True, fill='y')
     #사진 부분
-    global graph
-    PictureBox = Listbox(framePicture, selectmode='extended',\
-        font= fontNormal, width=5, height=5, \
+    global InformationBox
+    InformationBox = Listbox(framePicture, selectmode='extended',\
+        font= fontNormal, width=5, height=8, \
         borderwidth=5, relief='ridge')
-    PictureBox.bind('<<ListboxSelect>>', event_for_listbox)
-    PictureBox.pack(side='left', anchor='n', expand=True, fill="x")
-    GraphBox = Listbox(framePicture, selectmode='extended',\
-        font= fontNormal, width=8, height=5, \
-        borderwidth=5, relief='ridge')
-    GraphBox.bind('<<ListboxSelect>>', event_for_listbox)
-    GraphBox.pack(side="right", padx=10, expand=True, fill='y')
+    #InformationBox.bind('<<ListboxSelect>>', event_for_listbox)
+    InformationBox.pack(side='left', anchor='n', expand=True, fill="x")
+
+
+    # GraphBox = Listbox(framePicture, selectmode='extended',\
+    #     font= fontNormal, width=8, height=5, \
+    #     borderwidth=5, relief='ridge')
+    # GraphBox.bind('<<ListboxSelect>>', event_for_listbox)
+    # GraphBox.pack(side="right", padx=10, expand=True, fill='y')
     #지도 부분
     MapButton = Button(frameMap, font = fontNormal, \
     text="지도", command= mapClicked)
