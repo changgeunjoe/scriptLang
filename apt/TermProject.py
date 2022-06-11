@@ -5,8 +5,8 @@ from typing import MappingView
 import sendMail
 import subscriptionInfoAPI
 import pprint
-#import atpMapRegion
 import tkintermapview
+import spam
 
 textForMap = ''
 addressForMap = ''
@@ -20,6 +20,7 @@ houseEngineerCompany = dict()#건설업체
 contactStartDate = dict()#계약 시작일
 contactEndDate = dict()#계약 종료일
 
+py_modules = ['TermProject']
 
 g_Tk = Tk()
 g_Tk.geometry("400x600+450+100") # {width}x{height}+-{xpos}+-{ypos}
@@ -178,6 +179,7 @@ def SearchHouse(): # "검색" 버튼 -> "도서관"
     res = subscriptionInfoAPI.getsellAptInfo(slist[preSearchKeyword])    
     global listBox
     listBox.delete(0, listBox.size())
+    listBox.insert(0, spam.start())
     if res['data'] != None:
         houseNameListT = []
         for x in res['data']:
@@ -200,7 +202,7 @@ def SearchHouse(): # "검색" 버튼 -> "도서관"
                     houseEngineerCompany[a] = x["CNSTRCT_ENTRPS_NM"]
                     contactStartDate[a] = x["CNTRCT_CNCLS_BGNDE"]
                     contactEndDate[a] = x["CNTRCT_CNCLS_ENDDE"]
-                    listBox.insert(i-1, a)
+                    listBox.insert(i, a)
                     i = i+1
                     
             else:
@@ -212,8 +214,9 @@ def SearchHouse(): # "검색" 버튼 -> "도서관"
                 houseEngineerCompany[a] = x["CNSTRCT_ENTRPS_NM"]
                 contactStartDate[a] = x["CNTRCT_CNCLS_BGNDE"]
                 contactEndDate[a] = x["CNTRCT_CNCLS_ENDDE"]
-                listBox.insert(i-1, a)
-                i = i+1                
+                listBox.insert(i, a)
+                i = i+1
+        listBox.insert(i, spam.end())
 
 def mapClicked():
     mapRoot = Toplevel()

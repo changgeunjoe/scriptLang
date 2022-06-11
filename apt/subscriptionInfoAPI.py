@@ -1,7 +1,6 @@
 from codecs import utf_16_be_encode
 from encodings import utf_8
 from http.client import HTTPSConnection
-import regionCode
 import json
 import requests
 import urllib

@@ -58,8 +58,8 @@ def getData(houseNum = None, notificationNum = None,region = None,recruitStart =
             houseEngineerCompany = item["CNSTRCT_ENTRPS_NM"]#건설 회사
             contactStartDate = item["CNTRCT_CNCLS_BGNDE"]#계약 시작일
             contactEndDate = item["CNTRCT_CNCLS_ENDDE"]
-            row = '지원 시작일' + str(applyStart) + '~' + str(applyEnd) + '\n계약 시작일: ' + str(contactStartDate) + '~' + str(contactEndDate) + '\n공급지역: ' + \
-                str(region) + '\n집 이름:' + str(houseName) + '\n주택관리번호: ' + str(notificationNum) + '\n건설회사' + str(houseEngineerCompany) + \
+            row = '지원 시작일: ' + str(applyStart) + ' ~ ' + str(applyEnd) + '\n계약 시작일: ' + str(contactStartDate) + ' ~ ' + str(contactEndDate) + '\n공급지역: ' + \
+                str(region) + '\n집 이름: ' + str(houseName) + '\n주택관리번호: ' + str(notificationNum) + '\n건설회사: ' + str(houseEngineerCompany) + \
                     '\n당첨자 발표일: ' + str(housePrizeDate)
             res_list.append(row)
     return res_list
