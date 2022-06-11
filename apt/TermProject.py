@@ -27,9 +27,10 @@ g_Tk.geometry("400x600+450+100") # {width}x{height}+-{xpos}+-{ypos}
 
 def event_for_listbox(event): # 리스트 선택 시 내용 출력
     selection = event.widget.curselection()
+    global slist
     if selection:
         index = selection[0]
-        data = event.widget.get(index)
+        data = event.widget.get(slist[index])
         global addressForMap
         global textForMap
         addressForMap = data
@@ -134,9 +135,7 @@ def onSearch(): # "검색" 버튼 이벤트처리
     # if iSearchIndex >= 5: 
     #     pass
     # else:
-    SearchHouse()        
-    global InputLabel
-    print(InputLabel.get())
+    SearchHouse()    
         #subscriptionInfoAPI.getsellAptInfo(sels) # 연결 안됨
         # 유틸리티 함수: 문자열 내용 있을 때만 사용
     
@@ -180,7 +179,7 @@ def SearchHouse(): # "검색" 버튼 -> "도서관"
             if a in houseNameListT:
                 continue
             global InputLabel
-            if InputLabel.get() != '':                
+            if InputLabel.get() != '':
                 if InputLabel.get() in a:
                     houseNameListT.append(a)
                     houseNameList[a] = x["HOUSE_NM"]
@@ -192,7 +191,7 @@ def SearchHouse(): # "검색" 버튼 -> "도서관"
                     contactEndDate[a] = x["CNTRCT_CNCLS_ENDDE"]
                     listBox.insert(i-1, a)
                     i = i+1
-                    print('2')
+                    
             else:
                 houseNameListT.append(a)
                 houseNameList[a] = x["HOUSE_NM"]
@@ -203,8 +202,7 @@ def SearchHouse(): # "검색" 버튼 -> "도서관"
                 contactStartDate[a] = x["CNTRCT_CNCLS_BGNDE"]
                 contactEndDate[a] = x["CNTRCT_CNCLS_ENDDE"]
                 listBox.insert(i-1, a)
-                i = i+1
-                print('1')
+                i = i+1                
 
 def mapClicked():
     mapRoot = Toplevel()
