@@ -91,7 +91,7 @@ def InitScreen():
     global slist    
     LBScrollbar = Scrollbar(frameCombo)
     SearchListBox = Listbox(frameCombo, font=fontNormal, activestyle='none', width=10, height=1, borderwidth=12, relief='ridge', yscrollcommand=LBScrollbar.set) 
-    slist = ["서울", "부산","대전", "대구", "울산", "광주", "인천", "세종", "경기", "강원", "전남", "전북",  "경남", "경북"]
+    slist = ["서울", "부산","대전", "대구", "울산", "광주", "인천", "세종", "경기", "강원", "전남", "전북",  "경남", "경북", "제주"]
     for i, s in enumerate(slist): 
         SearchListBox.insert(i, s)
     SearchListBox.pack(side='left', padx=10, expand=True)
