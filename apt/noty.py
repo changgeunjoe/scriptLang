@@ -64,13 +64,8 @@ def getData(houseNum = None, notificationNum = None,region = None,recruitStart =
             res_list.append(row)
     return res_list
 
-    #sendMessage('5123909010', 'aaa')
-
 def sendMessage(user, msg): 
     try:
         bot.sendMessage(user, msg) 
     except:
         traceback.print_exception(*sys.exc_info(), file=sys.stdout)
-
-
-#getData('11545', '202101')

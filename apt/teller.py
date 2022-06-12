@@ -10,9 +10,7 @@ import noty
 
 def replyAptData(user, houseNum = None, notificationNum = None,region = None,recruitStart = None,recruitEnd = None): 
     print(user, houseNum, region) 
-    res_list = noty.getData( houseNum = houseNum, notificationNum = notificationNum,region = region,recruitStart = recruitStart,recruitEnd = recruitEnd )
-# 하나씩 보내면 메세지 개수가 너무 많아지므로
-# 300자까지는 하나의 메세지로 묶어서 보내기. 
+    res_list = noty.getData( houseNum = houseNum, notificationNum = notificationNum,region = region,recruitStart = recruitStart,recruitEnd = recruitEnd ). 
     msg = '' 
     for r in res_list: 
         print( str(datetime.now()).split('.')[0], r )

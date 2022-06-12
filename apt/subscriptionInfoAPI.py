@@ -20,8 +20,7 @@ def userURIBuilder(uri, **user):
         str += key + "=" + user[key] + "&"
     return str
 
-def getsellAptInfo(search):
-    serviceKey = "WTdhSu8Xoa2qFTe9YL4yicpM+fSZpEp9NFAWZJDT9Uv+FTLLJ1CkIjIl3Kmbk7jUxg2Y8fep6Tz08BdBHpXw4g=="
+def getsellAptInfo(search):    
     Autho = "WTdhSu8Xoa2qFTe9YL4yicpM%2BfSZpEp9NFAWZJDT9Uv%2BFTLLJ1CkIjIl3Kmbk7jUxg2Y8fep6Tz08BdBHpXw4g%3D%3D" 
     uri = userURIBuilder("/ApplyhomeInfoDetailSvc/v1/getAPTLttotPblancDetail", serviceKey = Autho, page= '1', perPage= '100')    
     uri += urllib.parse.quote('cond[SUBSCRPT_AREA_CODE_NM::EQ]')
