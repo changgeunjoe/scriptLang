@@ -219,7 +219,7 @@ def SearchHouse(): # "검색" 버튼 -> "도서관"
                 listBox.insert(i, a)
                 i = i+1
 
-            if i==1:
+            if i==-1:
                 listBox.delete(0, listBox.size())
                 listBox.insert(0,"검색 결과가 없습니다!" )
         listBox.insert(i, spam.end())
@@ -238,6 +238,20 @@ def mapClicked():
         mapwidget.destroy()
         mapRoot.destroy()
         #지도를 표시할 수 없습니다 표기gui에 표시할거
+        global g_Tk    
+        toplevel=Toplevel(g_Tk)
+        frameTitle = Frame(toplevel, padx=10, pady=10, bg='#bfff00')
+        frameTitle.pack(side="top", fill="x")
+        fontNormal = font.Font(toplevel, size=15, weight='bold')
+        toplevel.geometry("330x70+820+100")
+        global guibox
+        guibox = Listbox(frameTitle, selectmode='extended',\
+        font= fontNormal, width=5, height=8, \
+        borderwidth=5, relief='ridge')
+    #InformationBox.bind('<<ListboxSelect>>', event_for_listbox)
+        guibox.pack(side='left', anchor='n', expand=True, fill="x")
+        guibox.delete(0, guibox.size())
+        guibox.insert(0,"지도gui를 띄울 수 없습니다!");
         return
     marker_1.set_text(textForMap)
     mapwidget.set_zoom(15)
@@ -258,12 +272,22 @@ def emailWindow():
     SearchButton = Button(frameTitle, font = fontNormal, \
     text="발송", command=onEmail)
     SearchButton.pack(side="right", padx=10, expand=True, fill='y')
+    global EmailBox
+    EmailBox = Listbox(frameTitle, selectmode='extended',\
+        font= fontNormal, width=5, height=8, \
+        borderwidth=5, relief='ridge')
+    #InformationBox.bind('<<ListboxSelect>>', event_for_listbox)
+    EmailBox.pack(side='left', anchor='n', expand=True, fill="x")
      
     
 def onEmail():
     inputReceiveMail = InputEmail.get() # 이메일 입력 받고서 이 변수에 저장
+    global EmailBox
     if not inputReceiveMail.find('@'):
+        EmailBox.delete(0, EmailBox.size())
+        EmailBox.insert(0,"실패");
         #여기에 메일 주소 잘못됐다고 나오는 출력
+        
         return
     inputText = ''#내용을 여기에 삽입
     global textForMap
@@ -283,6 +307,8 @@ def onEmail():
     # else:
     #     mapwidget.destroy()
     #     mapRoot.destroy()
+    EmailBox.delete(0, EmailBox.size())
+    EmailBox.insert(0,"성공");
     if inputAptName == '' or inputRegion == '':
        pass
        #내용을 검색 후 이용해주세요. 출력
