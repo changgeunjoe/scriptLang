@@ -60,8 +60,13 @@ def handle(msg):
     houseNum = None
     region = None
     notiNum = None
-    applyS= None
+    applyS= None 
     applyE = None
+    if '주택관리번호' not in splitText and '지역' not in splitText and '공고번호' not in splitText\
+        and '모집공고시작일' not in splitText and '모집공고종료일' not in splitText and '확인' not in splitText\
+            and '저장'not in splitText:
+        noty.sendMessage(chat_id, '''도움말\n 예시\n주택관리번호 111, 지역 서울, 공고번호 1231, 모집공고시작일 yyyymmdd, 모집공고종료일 yyyymmdd"]''')
+        return
     if '주택관리번호' in splitText:
         houseNum = splitText[splitText.index('주택관리번호') + 1]
     if '지역' in splitText:
@@ -78,8 +83,9 @@ def handle(msg):
         save( chat_id, splitText[splitText.index('저장') + 1] )
     replyAptData(chat_id, houseNum=houseNum, notificationNum=notiNum, region=region, recruitStart=applyS, recruitEnd=applyE)
 
+    
     if houseNum == None and region == None and notiNum == None and applyS == None and applyE == None: 
-        noty.sendMessage(chat_id, '''모르는 명령어입니다.\n거래 [YYYYMM] [지역번호]\n지역 [지역번호]\n저장 [지역번호]\n확인 중 하나의 명령을 입력하세요.\n 지역 ["종로구 11110", "중구 11140", "용산구 11170", "성동구 11200", "광진구11215", "동대문구 11230", "중랑구 11260", "성북구 11290", "강북구 11305", "도봉구 11320", "노원구 11350", "은평구 11380", "서대문구 11410", "마포구11440", "양천구 11470", "강서구 11500", "구로구 11530", "금천구 11545", "영등포구 11560", "동작구 11590", "관악구 11620", "서초구 11650", "강남구11680", "송파구 11710", "강동구 11740"]''')
+        noty.sendMessage(chat_id, '''모르는 명령어입니다.\n 예시\n주택관리번호 nnnn, 지역 서울, 공고번호 nnnn, 모집공고시작일 yyyymmdd, 모집공고종료일 yyyymmdd"]''')
     
 
 today = date.today() 

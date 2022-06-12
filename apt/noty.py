@@ -30,11 +30,11 @@ def getData(houseNum = None, notificationNum = None,region = None,recruitStart =
         uri += '='
         uri += urllib.parse.quote(houseNum)
     if recruitStart != None:
-        uri += urllib.parse.quote('cond[RCRIT_PBLANC_DE::LTE]')
+        uri += urllib.parse.quote('cond[RCRIT_PBLANC_DE::GTE]')
         uri += '='
         uri += urllib.parse.quote(recruitStart)
     if recruitEnd != None:
-        uri += urllib.parse.quote('cond[RCRIT_PBLANC_DE::GTE]')
+        uri += urllib.parse.quote('cond[RCRIT_PBLANC_DE::LTE]')
         uri += '='
         uri += urllib.parse.quote(recruitEnd)
         
@@ -58,7 +58,7 @@ def getData(houseNum = None, notificationNum = None,region = None,recruitStart =
             houseEngineerCompany = item["CNSTRCT_ENTRPS_NM"]#건설 회사
             contactStartDate = item["CNTRCT_CNCLS_BGNDE"]#계약 시작일
             contactEndDate = item["CNTRCT_CNCLS_ENDDE"]
-            row = '지원 시작일: ' + str(applyStart) + ' ~ ' + str(applyEnd) + '\n계약 시작일: ' + str(contactStartDate) + ' ~ ' + str(contactEndDate) + '\n공급지역: ' + \
+            row = '청약 접수 기간: ' + str(applyStart) + ' ~ ' + str(applyEnd) + '\n계약 기간: ' + str(contactStartDate) + ' ~ ' + str(contactEndDate) + '\n공급지역: ' + \
                 str(region) + '\n집 이름: ' + str(houseName) + '\n주택관리번호: ' + str(notificationNum) + '\n건설회사: ' + str(houseEngineerCompany) + \
                     '\n당첨자 발표일: ' + str(housePrizeDate)
             res_list.append(row)
