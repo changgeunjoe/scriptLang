@@ -229,7 +229,7 @@ def mapClicked():
     if not marker_1:
         mapwidget.destroy()
         mapRoot.destroy()
-        #지도를 표시할 수 없습니다 표기gui
+        #지도를 표시할 수 없습니다 표기gui에 표시할거
         return
     marker_1.set_text(textForMap)
     mapwidget.set_zoom(15)
