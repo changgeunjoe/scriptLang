@@ -11,14 +11,16 @@ def sendMail(fromAddr, toAddr, msg):
     s.close()
 
 
-def clickEmail(reciveLocal, aptName, region):
+def clickEmail(reciveLocal = '', aptName = None, region = None, startApply = None, EndApply = None, housePrizeDate = None, houseEngie = None,\
+     contactStart = None, contactEnd = None):
     senderAddr = 'sh0win9907@gmail.com'
     recipientAddr = reciveLocal # HTML 전달을 위해 컨테이너 역할을 할 수 있는 "multipart/alternative" 타입사용
-    msg = MIMEMultipart('alternative') 
+    main = '지역: ' + region + '\n아파트 이름: ' + aptName + '지원 시작일: ' + str(startApply) + ' ~ ' + str(EndApply) + '\n계약 시작일: ' \
+        + str(contactStart) + ' ~ ' + str(contactEnd) + '\n건설회사: ' + str(houseEngie) + '\n당첨자 발표일: ' + str(housePrizeDate)
+    msg = MIMEText(main)
     msg['From'] = senderAddr 
-    msg['To'] = recipientAddr # 파일로부터 읽어서 MIME 문서를 생성. 
-
-    msg['Subject'] = region +"의 위치한" + aptName + "아파트는 청약이 존재합니다."
+    msg['To'] = recipientAddr # 파일로부터 읽어서 MIME 문서를 생성.     
+    msg['Subject'] = region + '에 있는 ' + aptName + '에 대한 청약 정보 입니다.'
 
 #로고(사진) 첨부
     #htmlFD = open("logo.html", 'rb')

@@ -259,24 +259,26 @@ def onEmail():
     global addressForMap
     inputAptName = textForMap#메일에 들어갈 아파트 이름
     inputRegion= addressForMap#아파트 위치
-    mapRoot = Toplevel()
-    mapRoot.geometry(f"{600}x{600}") 
-    mapwidget = tkintermapview.TkinterMapView(mapRoot, width=800, height=500, corner_radius=0)
-    mapwidget.pack()
-    marker_1 = mapwidget.set_address(inputRegion, marker=True)
-    if not marker_1:
-        mapwidget.destroy()
-        mapRoot.destroy()
-        # 이때 청약 주소 정보가 정확하지 않아 보낼 수 없습니다. 출력
-        return
+    # mapRoot = Toplevel()
+    # mapRoot.geometry(f"{600}x{600}") 
+    # mapwidget = tkintermapview.TkinterMapView(mapRoot, width=800, height=500, corner_radius=0)
+    # mapwidget.pack()
+    # marker_1 = mapwidget.set_address(inputRegion, marker=True)
+    # if not marker_1:
+    #     mapwidget.destroy()
+    #     mapRoot.destroy()
+    #     # 이때 청약 주소 정보가 정확하지 않아 보낼 수 없습니다. 출력
+    #     return
+    # else:
+    #     mapwidget.destroy()
+    #     mapRoot.destroy()
+    if inputAptName == '' or inputRegion == '':
+       pass
+       #내용을 검색 후 이용해주세요. 출력
     else:
-        mapwidget.destroy()
-        mapRoot.destroy()
-        if(inputAptName == '' or inputRegion == ''):
-            pass
-            #내용을 검색 후 이용해주세요. 출력
-        else:
-            sendMail.clickEmail(inputReceiveMail,inputAptName, inputRegion)   
+       sendMail.clickEmail(inputReceiveMail,aptName = inputAptName, region = inputRegion, startApply = houseStartApply[inputRegion], \
+           EndApply = houseEndApply[inputRegion], housePrizeDate = housePrizeDate[inputRegion], houseEngie = houseEngineerCompany[inputRegion],\
+                contactStart = contactStartDate[inputRegion], contactEnd = contactEndDate[inputRegion])
 
 
 
