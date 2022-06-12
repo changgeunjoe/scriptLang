@@ -23,7 +23,7 @@ contactEndDate = dict()#계약 종료일
 py_modules = ['TermProject']
 
 g_Tk = Tk()
-g_Tk.geometry("400x600+450+100") # {width}x{height}+-{xpos}+-{ypos}
+g_Tk.geometry("400x580+450+100") # {width}x{height}+-{xpos}+-{ypos}
 
 
 def event_for_listbox(event): # 리스트 선택 시 내용 출력
@@ -45,6 +45,7 @@ def event_for_listbox(event): # 리스트 선택 시 내용 출력
     InformationBox.insert(4,"청약 당첨자 발표일: " + housePrizeDate[data])
     InformationBox.insert(5,"건설업체: " + houseEngineerCompany[data])
     InformationBox.insert(6,"계약 종료일: " + contactEndDate[data])
+    InformationBox.insert(7,"계약 종료일: " + contactEndDate[data])
     print(addressForMap)
     print(textForMap)
     #얘네 싹 다 검색 창밑에 리스트 박스에 출력할 수 있도록 구현 좀요
@@ -204,6 +205,7 @@ def SearchHouse(): # "검색" 버튼 -> "도서관"
                     contactEndDate[a] = x["CNTRCT_CNCLS_ENDDE"]
                     listBox.insert(i, a)
                     i = i+1
+                
                     
             else:
                 houseNameListT.append(a)
@@ -216,7 +218,13 @@ def SearchHouse(): # "검색" 버튼 -> "도서관"
                 contactEndDate[a] = x["CNTRCT_CNCLS_ENDDE"]
                 listBox.insert(i, a)
                 i = i+1
+
+            if i==1:
+                listBox.delete(0, listBox.size())
+                listBox.insert(0,"검색 결과가 없습니다!" )
         listBox.insert(i, spam.end())
+   
+
 
 def mapClicked():
     mapRoot = Toplevel()
@@ -239,11 +247,11 @@ def mapClicked():
 def emailWindow():
     global g_Tk    
     toplevel=Toplevel(g_Tk)
-    frameTitle = Frame(toplevel, padx=10, pady=10, bg='#ff0000')
+    frameTitle = Frame(toplevel, padx=10, pady=10, bg='#bfff00')
     frameTitle.pack(side="top", fill="x")
     fontNormal = font.Font(toplevel, size=15, weight='bold')
     global InputEmail 
-    toplevel.geometry("600x200+820+100")
+    toplevel.geometry("550x70+820+100")
     InputEmail = Entry(frameTitle, font = fontNormal, \
     width = 30, borderwidth = 12, relief = 'ridge')
     InputEmail.pack(side="left", padx=10, expand=True)
