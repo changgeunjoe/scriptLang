@@ -254,6 +254,9 @@ def emailWindow():
     
 def onEmail():
     inputReceiveMail = InputEmail.get() # 이메일 입력 받고서 이 변수에 저장
+    if not inputReceiveMail.find('@'):
+        #여기에 메일 주소 잘못됐다고 나오는 출력
+        return
     inputText = ''#내용을 여기에 삽입
     global textForMap
     global addressForMap
