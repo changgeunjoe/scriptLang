@@ -96,7 +96,7 @@ def InitScreen():
     for i, s in enumerate(slist): 
         SearchListBox.insert(i, s)
     SearchListBox.pack(side='left', padx=10, expand=True)
-    SearchListBox.bind('<<ListboxSelect>>', event_for_listbox)
+    SearchListBox.bind('<<ListboxSelect>>', event_for_searchListbox)
     LBScrollbar.pack(side="left")
     LBScrollbar.config(command=SearchListBox.yview)
     global InputLabel
@@ -283,9 +283,9 @@ def emailWindow():
 def onEmail():
     inputReceiveMail = InputEmail.get() # 이메일 입력 받고서 이 변수에 저장
     global EmailBox
-    if not inputReceiveMail.find('@'):
+    if inputReceiveMail.find('@') == -1:
         EmailBox.delete(0, EmailBox.size())
-        EmailBox.insert(0,"실패");
+        EmailBox.insert(0,"실패")
         #여기에 메일 주소 잘못됐다고 나오는 출력
         
         return
@@ -307,15 +307,15 @@ def onEmail():
     # else:
     #     mapwidget.destroy()
     #     mapRoot.destroy()
-    EmailBox.delete(0, EmailBox.size())
-    EmailBox.insert(0,"성공");
     if inputAptName == '' or inputRegion == '':
        pass
        #내용을 검색 후 이용해주세요. 출력
     else:
-       sendMail.clickEmail(inputReceiveMail,aptName = inputAptName, region = inputRegion, startApply = houseStartApply[inputRegion], \
+        sendMail.clickEmail(inputReceiveMail,aptName = inputAptName, region = inputRegion, startApply = houseStartApply[inputRegion], \
            EndApply = houseEndApply[inputRegion], housePrizeDate = housePrizeDate[inputRegion], houseEngie = houseEngineerCompany[inputRegion],\
                 contactStart = contactStartDate[inputRegion], contactEnd = contactEndDate[inputRegion])
+        EmailBox.delete(0, EmailBox.size())
+        EmailBox.insert(0,"성공")
 
 
 
