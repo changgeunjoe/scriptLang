@@ -4,7 +4,7 @@ setup(
     name='TermProject',
     version='1.0', 
     py_modules=['TermProject'], 
-    packages=['images'], 
-    package_data = {'images': ['*.gif']}, 
+    packages=['images', 'sub', 'telegram', 'spamFile'],
+    package_data = {'images': ['*.gif'], 'sub': ['*.py'], 'telegram': ['*.py'], 'spamFile':['*.pyd']}, 
     ext_modules=[module_spam]
 )

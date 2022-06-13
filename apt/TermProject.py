@@ -3,8 +3,8 @@ from tkinter import *
 from tkinter import font
 from typing import MappingView
 from PIL import Image, ImageTk
-import sendMail
-import subscriptionInfoAPI
+import sub.sendMail as sendMail 
+import sub.subscriptionInfoAPI as subscriptionInfoAPI
 import pprint
 import tkintermapview
 import spam
@@ -92,7 +92,7 @@ def InitScreen():
     global slist    
     LBScrollbar = Scrollbar(frameCombo)
     SearchListBox = Listbox(frameCombo, font=fontNormal, activestyle='none', width=10, height=1, borderwidth=12, relief='ridge', yscrollcommand=LBScrollbar.set) 
-    slist = ["서울", "부산","대전", "대구", "울산", "광주", "인천", "세종", "경기", "강원", "전남", "전북",  "경남", "경북", "제주"]
+    slist = ["서울", "부산","대전", "대구", "울산", "광주", "인천", "세종","충남","충북", "경기", "강원", "전남", "전북",  "경남", "경북", "제주"]
     for i, s in enumerate(slist): 
         SearchListBox.insert(i, s)
     SearchListBox.pack(side='left', padx=10, expand=True)
@@ -248,11 +248,11 @@ def mapClicked():
 def emailWindow():
     global g_Tk    
     toplevel=Toplevel(g_Tk)
-    frameTitle = Frame(toplevel, padx=10, pady=10, bg='#bfff00')
+    frameTitle = Frame(toplevel, padx=10, pady=10, bg='#00ff80')
     frameTitle.pack(side="top", fill="x")
     fontNormal = font.Font(toplevel, size=15, weight='bold')
     global InputEmail 
-    toplevel.geometry("550x70+820+100")
+    toplevel.geometry("900x70+820+100")
     InputEmail = Entry(frameTitle, font = fontNormal, \
     width = 30, borderwidth = 12, relief = 'ridge')
     InputEmail.pack(side="left", padx=10, expand=True)
@@ -261,7 +261,7 @@ def emailWindow():
     SearchButton.pack(side="right", padx=10, expand=True, fill='y')
     global EmailBox
     EmailBox = Listbox(frameTitle, selectmode='extended',\
-        font= fontNormal, width=5, height=8, \
+        font= fontNormal, width=15, height=8, \
         borderwidth=5, relief='ridge')
     EmailBox.pack(side='left', anchor='n', expand=True, fill="x")
      
@@ -281,7 +281,8 @@ def onEmail():
     inputAptName = textForMap#메일에 들어갈 아파트 이름
     inputRegion= addressForMap#아파트 위치
     if inputAptName == '' or inputRegion == '':
-       pass
+        EmailBox.delete(0, EmailBox.size())
+        EmailBox.insert(0,"내용을 검색 후 이용해주세요")
        #내용을 검색 후 이용해주세요. 출력
     else:
         sendMail.clickEmail(inputReceiveMail,aptName = inputAptName, region = inputRegion, startApply = houseStartApply[inputRegion], \

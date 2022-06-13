@@ -6,3 +6,8 @@ images\img.gif
 images\모코코.gif
 images\이메일.gif
 images\지도.gif
+spamFile\spam.pyd
+sub\sendMail.py
+sub\subscriptionInfoAPI.py
+telegram\noty.py
+telegram\teller.py

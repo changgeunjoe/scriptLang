@@ -21,18 +21,22 @@ def getData(houseNum = None, notificationNum = None,region = None,recruitStart =
         uri += urllib.parse.quote('cond[SUBSCRPT_AREA_CODE_NM::EQ]')
         uri += '='
         uri += urllib.parse.quote(region)
+        uri += '&'
     if notificationNum != None:
         uri += urllib.parse.quote('cond[HOUSE_MANAGE_NO::EQ]')
         uri += '='
         uri += urllib.parse.quote(notificationNum)
+        uri += '&'
     if houseNum != None:
         uri += urllib.parse.quote('cond[PBLANC_NO::EQ]')#공고
         uri += '='
         uri += urllib.parse.quote(houseNum)
+        uri += '&'
     if recruitStart != None:
         uri += urllib.parse.quote('cond[RCRIT_PBLANC_DE::GTE]')
         uri += '='
         uri += urllib.parse.quote(recruitStart)
+        uri += '&'
     if recruitEnd != None:
         uri += urllib.parse.quote('cond[RCRIT_PBLANC_DE::LTE]')
         uri += '='
