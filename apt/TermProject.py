@@ -2,6 +2,7 @@ from select import select
 from tkinter import *
 from tkinter import font
 from typing import MappingView
+from PIL import Image, ImageTk
 import sendMail
 import subscriptionInfoAPI
 import pprint
@@ -21,11 +22,13 @@ contactStartDate = dict()#계약 시작일
 contactEndDate = dict()#계약 종료일
 
 py_modules = ['TermProject']
+#images = {'mokoko': PhotoImage(file="img.gif")}
 
+#imageIcon = ImageTk.PhotoImage(imges)
 g_Tk = Tk()
 g_Tk.geometry("400x580+450+100") # {width}x{height}+-{xpos}+-{ypos}
 
-
+images = {'Mokoko': PhotoImage(file="images\모코코.png"), 'CokeMo': PhotoImage(file="images\img.gif")}
 def event_for_listbox(event): # 리스트 선택 시 내용 출력
     #selection = event.widget.curselection()
     global listBox
@@ -69,17 +72,17 @@ def InitScreen():
     fontTitle = font.Font(g_Tk, size=18, weight='bold', family = '바탕체')
     fontNormal = font.Font(g_Tk, size=15, weight='bold') 
     # 화면 전체 구도 잡기. 
-    frameTitle = Frame(g_Tk, padx=10, pady=10, bg='#4AA8D8')
+    frameTitle = Frame(g_Tk, padx=10, pady=10, bg='#ff3399')
     frameTitle.pack(side="top", fill="x")
-    frameCombo = Frame(g_Tk, pady=10, bg='#4AA8D8')
+    frameCombo = Frame(g_Tk, pady=10, bg='#ff3399')
     frameCombo.pack(side="top", fill="x")
-    frameEntry = Frame(g_Tk, pady=10, bg='#4AA8D8')
+    frameEntry = Frame(g_Tk, pady=10, bg='#ff3399')
     frameEntry.pack(side="top", fill="x")
-    frameList = Frame(g_Tk, padx=10, pady=10, bg='#4AA8D8')
+    frameList = Frame(g_Tk, padx=10, pady=10, bg='#ff3399')
     frameList.pack(side="top", fill="x")
-    framePicture = Frame(g_Tk, padx=10, pady=10, bg='#4AA8D8')
+    framePicture = Frame(g_Tk, padx=10, pady=10, bg='#ff3399')
     framePicture.pack(side="top", fill="x")
-    frameMap = Frame(g_Tk, padx=10, pady=10, bg='#4AA8D8')
+    frameMap = Frame(g_Tk, padx=10, pady=10, bg='#ff3399')
     frameMap.pack(side="top", fill="x")
     
 # title 부분
@@ -136,10 +139,17 @@ def InitScreen():
     #     borderwidth=5, relief='ridge')
     # GraphBox.bind('<<ListboxSelect>>', event_for_listbox)
     # GraphBox.pack(side="right", padx=10, expand=True, fill='y')
+    
+    mokokoIcon = Label(frameMap, image=images['Mokoko'], bg='#000000')
+    mokokoIcon.pack(side='left',padx = 10,expand=True)
+
     #지도 부분
     MapButton = Button(frameMap, font = fontNormal, \
     text="지도", command= mapClicked)
-    MapButton.pack(side="right", padx=10, expand=True, fill='y')
+    MapButton.pack(side="left", padx=10, expand=True, fill='y')
+
+    mokokoIcon = Label(frameMap, image=images['CokeMo'], bg='#000000')
+    mokokoIcon.pack(side='left',padx = 10,expand=True)
 
 def onSearch(): # "검색" 버튼 이벤트처리
     # global SearchListBox
