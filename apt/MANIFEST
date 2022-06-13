@@ -10,4 +10,5 @@ spamFile\spam.pyd
 sub\sendMail.py
 sub\subscriptionInfoAPI.py
 telegram\noty.py
+telegram\subscriptionInfoAPI.py
 telegram\teller.py
